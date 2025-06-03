@@ -30,14 +30,18 @@ const Header = () => {
           </div>
 
           <div className="flex gap-4">
-            <span className="relative">
+            <button className="relative">
               <HeartIcon size={30} />
-              <p className="bg-red-600 text-white rounded-full text-center w-5 absolute right-0 bottom-3">
+              <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
                 1
               </p>
-            </span>
-            <ShoppingCart size={30} />
-            <User2 size={30} />
+            </button>
+            <button>
+              <ShoppingCart size={30} />
+            </button>
+            <button>
+              <User2 size={30} />
+            </button>
           </div>
         </nav>
         {/* Hamburger Button */}

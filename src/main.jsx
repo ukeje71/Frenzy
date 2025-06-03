@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App.jsx";
 import Header from "./components/Header";
 import { BrowserRouter } from "react-router";
+import Footer from "./components/Footer.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Header />
-
     <App />
+    <Footer/>
   </BrowserRouter>
 );
