@@ -1,4 +1,6 @@
+/* Tailwind import */
 @import "tailwindcss";
+
 .logo {
   -webkit-text-stroke: 2px #000;
   -webkit-text-fill-color: #fff;
@@ -9,4 +11,7 @@ footer {
 footer h3{
     font-weight: bolder;
     margin-bottom: 10px;
+}
+li{
+  list-style: disc;
 }

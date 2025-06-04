@@ -1,6 +1,16 @@
-import { HeartIcon, Search, User2 } from "lucide-react";
+import { Calendar1, ChevronDown, HeartIcon, MailOpenIcon, MessageSquareIcon, Search, User2 } from "lucide-react";
 import React, { useState } from "react";
-import { Phone, ShoppingCart, Menu, X } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  BriefcaseIcon,
+  ChartSplineIcon,
+  CircleGaugeIcon,
+  Landmark,
+  UserCircle,
+  ShoppingCart,
+  Menu,
+  X,
+} from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router";
 
@@ -10,6 +20,11 @@ const Header = () => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+  const [open, setOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setOpen(!open);
   };
   return (
     <section className="w-full border-b-gray-600 border-b-1">
@@ -50,48 +65,113 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden mt-4 space-y-4  transition-all">
-          <ul className="flex flex-col items-start ">
-            <li className="border-gray-400 w-full border-b-2 hover:bg-gray-400 hover:text-white pt-4">
-              <NavLink to="/" onClick={toggleMenu}>
-                Home
-              </NavLink>
-            </li>
-            <li className="border-gray-400 w-full border-b-2 hover:bg-gray-400 hover:text-white pt-4">
-              <a href="#" onClick={toggleMenu}>
-                About
-              </a>
-            </li>
-            <li className="border-gray-400 w-full border-b-2 hover:bg-gray-400 hover:text-white pt-4">
-              <a href="#" onClick={toggleMenu}>
-                Contact
-              </a>
-            </li>
-          </ul>
-          <div className="flex flex-col gap-4 mt-4">
-            <button
-              onClick={() => {
-                navigate("/Login");
-                toggleMenu();
-              }}
-              className="border border-gray-400 text-gray-400 px-4 py-2 rounded-md hover:bg-gray-400 hover:text-white"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={() => {
-                navigate("/create");
-                toggleMenu();
-              }}
-              className="border border-gray-400 text-gray-400 px-4 py-2 rounded-md hover:bg-gray-400 hover:text-white"
-            >
-              Get Started
-            </button>
-          </div>
+      {/* Mobile Slide-In Menu */}
+      <div
+        className={`fixed top-0 left-0 h-full w-2/3 max-w-sm bg-white px-6 text-gray-600 z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="mt-4  flex justify-between items-center ">
+          <h2 className="font-bold text-xl">General</h2>
         </div>
-      )}
+        <ul className="mt-4 overflow-scroll">
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <CircleGaugeIcon />
+            <p>App</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <BriefcaseIcon />
+            <p>Ecommerce</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <ChartSplineIcon />
+            <p>Analytics</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <Landmark />
+            <p>Banking</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <BriefcaseBusiness />
+            <p>Booking</p>
+          </li>
+        </ul>
+        <ul>
+          <h2 className=" font-bold text-2xl mt-5">Management</h2>
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <UserCircle />
+            <p>User</p>
+          </li>
+          <span className="relative inline-block text-left transition-transform duration-300 ease-in-out">
+            <button
+              onClick={toggleDropdown}
+              className="font-semibold  gap-4 outline-none flex flex-row items-center mt-4"
+            >
+              <BriefcaseBusiness />
+              <p>Admin</p>
+              <ChevronDown />
+            </button>
+
+            {open && (
+              <ul className="mt-2 bg-white rounded w-40 z-10 ">
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Shop
+                </li>
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Product
+                </li>
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Checkout
+                </li>
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  Invoices
+                </li>
+              </ul>
+            )}
+          </span>
+        </ul>
+
+        <ul>
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <MailOpenIcon />
+            <p>App</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <MessageSquareIcon />
+            <p>Ecommerce</p>
+          </li>
+
+          <li className="flex flex-row items-center gap-4 mt-4">
+            <Calendar1 />
+            <p>Ecommerce</p>
+          </li>
+        </ul>
+        <div className="flex flex-col gap-4 p-4 mt-4">
+          <button
+            onClick={() => {
+              navigate("/Login");
+              toggleMenu();
+            }}
+            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-700 hover:text-white"
+          >
+            Sign In
+          </button>
+          <button
+            onClick={() => {
+              navigate("/create");
+              toggleMenu();
+            }}
+            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-700 hover:text-white"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
     </section>
   );
 };
