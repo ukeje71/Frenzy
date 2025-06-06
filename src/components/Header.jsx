@@ -36,20 +36,19 @@ const Header = () => {
     <section className="w-full border-b-gray-600 border-b-1">
       <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center">
         <h1 className=" text-2xl logo ">Frenzy</h1>
-          <div className="hidden md:flex  lg:w-70 border-1 px-4 py-2 text-center bg-[#ECEBEB] rounded-full items-center  border-none">
-            <input
-              className="border-0 outline-0 w-full"
-              type="search"
-              name="search"
-              id="search"
-              placeholder="What are you looking for"
-            />
-            <button className="border-0 outline-0">
-              <Search />
-            </button>
-          </div>
+        <div className="hidden md:flex  lg:w-70 border-1 px-4 py-2 text-center bg-[#ECEBEB] rounded-full items-center  border-none">
+          <input
+            className="border-0 outline-0 w-full"
+            type="search"
+            name="search"
+            id="search"
+            placeholder="What are you looking for"
+          />
+          <button className="border-0 outline-0">
+            <Search />
+          </button>
+        </div>
         <nav className="hidden flex-row items-center  md:flex gap-4 ">
-
           <div className="flex gap-4">
             <button className="relative">
               <HeartIcon size={30} />

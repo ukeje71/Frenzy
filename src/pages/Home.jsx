@@ -73,7 +73,7 @@ const Home = () => {
               <SwiperSlide>
                 <div className=" md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
                   {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i}/>
+                    <Cards key={i} />
                   ))}
                 </div>
               </SwiperSlide>
@@ -91,7 +91,7 @@ const Home = () => {
               <SwiperSlide>
                 <div className="md:grid flex flex-col items-centersm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 p-2 md:p-4">
                   {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i + 9}/>
+                    <Cards key={i + 9} />
                   ))}
                 </div>
               </SwiperSlide>
