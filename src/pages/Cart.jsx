@@ -1,0 +1,200 @@
+import Sidebar from "../components/Sidebar";
+import React from "react";
+import img1 from "../assets/Jordan8.png";
+import { DivideCircle, Trash2 } from "lucide-react";
+const Cart = () => {
+  return (
+    <div className="flex flex-col md:flex-row  overflow-hidden">
+      {/* Sidebar */}
+      <section className="w-fit">
+        <Sidebar />
+      </section>
+
+      {/* Cart_details */}
+      <section className="w-full p-4">
+        <figure className="text-gray-600">Home / Cart</figure>
+        {/* Cart_cover */}
+        <div className="flex flex-col lg:flex-row justify-center items-start gap-6 px-4 sm:px-6 lg:px-8 py-6">
+          {/* Items Table - Responsive */}
+          <div className="w-full lg:w-2/3 overflow-x-auto">
+            <div className="shadow-lg rounded-xl bg-white overflow-hidden min-w-[300px]">
+              <div className="px-4 py-3 border-b border-gray-200 sm:px-6">
+                <h3 className="font-bold text-lg">Cart</h3>
+                <p className="text-gray-500 text-sm">(3 items)</p>
+              </div>
+
+              {/* Mobile/Tablet View (Stacked) */}
+              <div className="lg:hidden ">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="border-b border-gray-200 p-4">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-md overflow-hidden mr-3">
+                        <im4
+                          src={img1}
+                          alt="Product"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-900">
+                          Nike Air Force 1'07 Essential
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <p className="text-xs text-gray-500 mr-2">
+                            Size: 43 |
+                          </p>
+                          <div className="flex">
+                            <div className="bg-[darkorchid] w-4 h-4 rounded-full z-30"></div>
+                            <div className="bg-gray-500 w-4 h-4 rounded-full -ml-2 z-20"></div>
+                            <div className="bg-[#ccc] w-4 h-4 rounded-full -ml-2 z-10"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
+                      <div>
+                        <p className="text-gray-500">Price</p>
+                        <p className="font-medium">$45.34</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Qty</p>
+                        <div className="flex items-center justify-center border border-gray-300 rounded-md w-fit mx-auto px-1">
+                          <button className="px-1 text-xs">-</button>
+                          <span className="px-1">1</span>
+                          <button className="px-1 text-xs">+</button>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Total</p>
+                        <div className="flex items-center justify-end gap-2">
+                          <p className="font-medium">$45.34</p>
+                          <button className="text-red-500">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop View (Table) */}
+              <table className="hidden lg:table w-full shadow-lg">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Products
+                    </th>
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Price
+                    </th>
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Quantity
+                    </th>
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Total Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {[1, 2, 3].map((item) => (
+                    <tr key={item} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 w-20 h-20 bg-gray-100 rounded-md overflow-hidden">
+                            <img
+                              src={img1}
+                              alt="Product"
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <p className="text-sm font-medium text-gray-900">
+                              Nike Air Force 1'07 Essential
+                            </p>
+                            <div className="flex items-center mt-1">
+                              <p className="text-xs text-gray-500 mr-2">
+                                Size: 43 |
+                              </p>
+                              <div className="flex">
+                                <div className="bg-[darkorchid] w-4 h-4 rounded-full z-30"></div>
+                                <div className="bg-gray-500 w-4 h-4 rounded-full -ml-2 z-20"></div>
+                                <div className="bg-[#ccc] w-4 h-4 rounded-full -ml-2 z-10"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <p className="text-gray-900">$45.34</p>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex items-center justify-center border border-gray-300 rounded-md w-fit mx-auto px-2">
+                          <button className="px-1">-</button>
+                          <span className="px-2">1</span>
+                          <button className="px-1">+</button>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex items-center justify-center gap-3">
+                          <p className="text-gray-900">$45.34</p>
+                          <button className="text-red-500 hover:text-red-700">
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Order Summary - Responsive */}
+          <div className="w-full lg:w-1/3">
+            <div className="shadow-lg p-4 sm:p-6 rounded-xl bg-white">
+              <h3 className="text-lg font-bold mb-4">Order Summary</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Sub total</span>
+                  <span>$316.55</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Shipping</span>
+                  <span>Free</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Discount</span>
+                  <span className="text-green-600">-$10</span>
+                </div>
+              </div>
+
+              <div className="mt-4 flex">
+                <input
+                  type="text"
+                  placeholder="Gift Card / Discount code"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500"
+                />
+                <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-r-lg transition-colors">
+                  Apply
+                </button>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
+                <span className="font-medium">Total</span>
+                <span className="text-red-500 font-bold">$320.45</span>
+              </div>
+
+              <button className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors">
+                Check Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Cart;
