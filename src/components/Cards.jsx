@@ -1,13 +1,13 @@
 import { Eye, Heart } from "lucide-react";
-// import img1 from "../assets/jordan8.png";
+import img1 from "../assets/jordan8.png";
 
-const Cards = ({ images }) => {
+const Cards = () => {
   return (
       <div className="p-2 w-fit shadow-xs shadow-gray-400 border-gray-200 border-1 rounded-2xl">
         <div className="relative">
           <div className="bg-[#0000000a] p-2 rounded-2xl">
               <img
-                src={images}
+                src={img1}
                 alt="img1"
                 className="w-full h-full mix-blend-overlay"
               />

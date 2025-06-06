@@ -3,7 +3,6 @@ import Sidebar from "../components/Sidebar";
 import Slider from "../components/Slider";
 import { Search } from "lucide-react";
 import Cards from "../components/Cards";
-import img1 from "../assets/jordan8.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -74,7 +73,7 @@ const Home = () => {
               <SwiperSlide>
                 <div className=" md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
                   {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i} images={img1} />
+                    <Cards key={i}/>
                   ))}
                 </div>
               </SwiperSlide>
@@ -83,7 +82,7 @@ const Home = () => {
               <SwiperSlide>
                 <div className="md:grid flex  flex-col items-centersm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 p-2 md:p-4">
                   {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i + 9} images={img1} />
+                    <Cards key={i + 9} />
                   ))}
                 </div>
               </SwiperSlide>
@@ -92,7 +91,7 @@ const Home = () => {
               <SwiperSlide>
                 <div className="md:grid flex flex-col items-centersm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4 p-2 md:p-4">
                   {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i + 9} images={img1} />
+                    <Cards key={i + 9}/>
                   ))}
                 </div>
               </SwiperSlide>
