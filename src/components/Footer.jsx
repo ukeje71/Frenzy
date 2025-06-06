@@ -9,7 +9,7 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="bg-teal-800 w-full ">
-      <footer className=" pt-7 pb-7 md:w-[700px] lg:w-[1100px] m-auto items-center grid md:grid-cols-2 lg:grid-cols-5 text-center text-white">
+      <footer className=" pt-7 pb-7 md:w-[700px] lg:w-[1000px] m-auto items-center grid md:grid-cols-2 lg:grid-cols-5 text-center text-white">
         <span class="f-span">
           <h3>Frenzy</h3>
           <p>Subscribe</p>

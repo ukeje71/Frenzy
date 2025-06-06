@@ -1,4 +1,3 @@
-import { Calendar1, ChevronDown, HeartIcon, MailOpenIcon, MessageSquareIcon, Search, User2 } from "lucide-react";
 import React, { useState } from "react";
 import {
   BriefcaseBusiness,
@@ -10,6 +9,13 @@ import {
   ShoppingCart,
   Menu,
   X,
+  Calendar1,
+  ChevronDown,
+  HeartIcon,
+  MailOpenIcon,
+  MessageSquareIcon,
+  Search,
+  User2,
 } from "lucide-react";
 
 import { NavLink, useNavigate } from "react-router";
@@ -28,12 +34,11 @@ const Header = () => {
   };
   return (
     <section className="w-full border-b-gray-600 border-b-1">
-      <div className="flex justify-between  p-4 md:w-[700px] lg:w-[1100px] m-auto h-[6rem] items-center">
-        <h1 className="font-extrabold text-2xl logo ">Frenzy</h1>
-        <nav className="hidden flex-row items-center md:flex gap-4 ">
-          <div className="hidden md:flex  border-1 px-4 py-2 text-center rounded-xl items-center  border-gray-500">
+      <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center">
+        <h1 className=" text-2xl logo ">Frenzy</h1>
+          <div className="hidden md:flex  lg:w-70 border-1 px-4 py-2 text-center bg-[#ECEBEB] rounded-full items-center  border-none">
             <input
-              className="border-0 outline-0"
+              className="border-0 outline-0 w-full"
               type="search"
               name="search"
               id="search"
@@ -43,6 +48,7 @@ const Header = () => {
               <Search />
             </button>
           </div>
+        <nav className="hidden flex-row items-center  md:flex gap-4 ">
 
           <div className="flex gap-4">
             <button className="relative">
@@ -67,14 +73,14 @@ const Header = () => {
 
       {/* Mobile Slide-In Menu */}
       <div
-        className={`fixed top-0 left-0 h-full w-2/3 max-w-sm bg-white px-6 text-gray-600 z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={` overflow-y-scroll fixed top-0 left-0 h-full w-2/3 max-w-sm bg-white px-6 text-gray-600 z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="mt-4  flex justify-between items-center ">
           <h2 className="font-bold text-xl">General</h2>
         </div>
-        <ul className="mt-4 overflow-scroll">
+        <ul className="mt-4">
           <li className="flex flex-row items-center gap-4 mt-4">
             <CircleGaugeIcon />
             <p>App</p>

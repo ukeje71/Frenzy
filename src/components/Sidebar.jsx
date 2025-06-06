@@ -20,7 +20,7 @@ const Sidebar = () => {
     setOpen(!open);
   };
   return (
-    <div className="md:w-[200px] h-full border-r-gray-400 border-r-1 ">
+    <div className="md:w-full h-full border-r-gray-400 border-r-1 ">
       <section className="text-gray-600 pt-4 hidden md:block   px-4 pb-4">
         <h2 className=" font-bold text-2xl lg:uppercase">General</h2>
         <ul>
