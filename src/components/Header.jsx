@@ -145,18 +145,22 @@ const Header = () => {
 
             {open && (
               <ul className="mt-2 bg-white rounded w-40 z-10 ">
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
-                  onClick={toggleMenu}
-                >
-                  Shop
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
-                  onClick={toggleMenu}
-                >
-                  Product
-                </li>
+                <NavLink to={"/cart"}>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                    onClick={toggleMenu}
+                  >
+                    Shop
+                  </li>
+                </NavLink>
+                <NavLink to={"/"}>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                    onClick={toggleMenu}
+                  >
+                    Product
+                  </li>
+                </NavLink>
                 <li
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
                   onClick={toggleMenu}

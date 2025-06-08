@@ -1,8 +1,11 @@
 import Sidebar from "../components/Sidebar";
 import React from "react";
 import img1 from "../assets/Jordan8.png";
-import { DivideCircle, Trash2 } from "lucide-react";
+import { ChevronLeft, DivideCircle, Trash2 } from "lucide-react";
+import { NavLink, useNavigate } from "react-router";
 const Cart = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col md:flex-row  overflow-hidden">
       {/* Sidebar */}
@@ -12,11 +15,19 @@ const Cart = () => {
 
       {/* Cart_details */}
       <section className="w-full p-4">
-        <figure className="text-gray-600">Home / Cart</figure>
+        <figure className="text-gray-600 flex flex-row gap-3">
+          <NavLink to={"/"}>
+            <p> Home</p>
+          </NavLink>
+          /
+          <NavLink to={"/cart"}>
+            <p> Cart</p>
+          </NavLink>
+        </figure>
         {/* Cart_cover */}
         <div className="flex flex-col lg:flex-row justify-center items-start gap-6 px-4 sm:px-6 lg:px-8 py-6">
           {/* Items Table - Responsive */}
-          <div className="w-full lg:w-2/3 overflow-x-auto">
+          <div className="w-full lg:w-2/3 shadow-lg overflow-x-auto">
             <div className="shadow-lg rounded-xl bg-white overflow-hidden min-w-[300px]">
               <div className="px-4 py-3 border-b border-gray-200 sm:px-6">
                 <h3 className="font-bold text-lg">Cart</h3>
@@ -29,7 +40,7 @@ const Cart = () => {
                   <div key={item} className="border-b border-gray-200 p-4">
                     <div className="flex items-start">
                       <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-md overflow-hidden mr-3">
-                        <im4
+                        <img
                           src={img1}
                           alt="Product"
                           className="w-full h-full object-contain"
@@ -54,11 +65,11 @@ const Cart = () => {
 
                     <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
                       <div>
-                        <p className="text-gray-500">Price</p>
+                        <p className="text-gray-500  mb-2">Price</p>
                         <p className="font-medium">$45.34</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Qty</p>
+                        <p className="text-gray-500 text-center mb-2">Qty</p>
                         <div className="flex items-center justify-center border border-gray-300 rounded-md w-fit mx-auto px-1">
                           <button className="px-1 text-xs">-</button>
                           <span className="px-1">1</span>
@@ -66,7 +77,7 @@ const Cart = () => {
                         </div>
                       </div>
                       <div>
-                        <p className="text-gray-500">Total</p>
+                        <p className="text-gray-500 text-center mb-2">Total</p>
                         <div className="flex items-center justify-end gap-2">
                           <p className="font-medium">$45.34</p>
                           <button className="text-red-500">
@@ -80,7 +91,7 @@ const Cart = () => {
               </div>
 
               {/* Desktop View (Table) */}
-              <table className="hidden lg:table w-full shadow-lg">
+              <table className="hidden lg:table w-full  border-gray-200 border-1 rounded-2xl shadow-lg">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -153,7 +164,7 @@ const Cart = () => {
 
           {/* Order Summary - Responsive */}
           <div className="w-full lg:w-1/3">
-            <div className="shadow-lg p-4 sm:p-6 rounded-xl bg-white">
+            <div className="shadow-lg border-gray-200 border-1 p-4 sm:p-6 rounded-xl bg-white">
               <h3 className="text-lg font-bold mb-4">Order Summary</h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
@@ -186,10 +197,21 @@ const Cart = () => {
                 <span className="text-red-500 font-bold">$320.45</span>
               </div>
 
-              <button className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors">
+              <button
+                onClick={() => {
+                  navigate("/billing");
+                }}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors"
+              >
                 Check Out
               </button>
             </div>
+            <NavLink to={"/"}>
+              <span className="flex text-gray-600 mt-7 gap-2">
+                <ChevronLeft />
+                <p>Continue Shopping </p>
+              </span>
+            </NavLink>
           </div>
         </div>
       </section>

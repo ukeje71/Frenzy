@@ -100,9 +100,11 @@ const Sidebar = () => {
                       Shop
                     </li>
                   </NavLink>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Product
-                  </li>
+                  <NavLink to={"/"}>
+                    <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
+                      Product
+                    </li>
+                  </NavLink>
                   <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
                     Checkout
                   </li>

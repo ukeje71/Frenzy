@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
+import Billing from "./pages/Billing";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/billing" element={<Billing />} />
       </Routes>
       <ToastContainer
         position="top-right"

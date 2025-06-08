@@ -11,8 +11,9 @@ import Swiperbtns from "../components/Swiperbtns";
 
 const Home = () => {
   return (
-    <div className="flex flex-col md:flex-row  overflow-clip">
-      <section>
+    <div className="flex flex-col md:flex-row  overflow-hidden">
+      {/* Sidebar */}
+      <section className="w-fit">
         <Sidebar />
       </section>
 
