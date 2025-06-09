@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
 import Billing from "./pages/Billing";
+import Payement from "./pages/Payement";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/billing" element={<Billing />} />
+        <Route path="/payement" element={<Payement />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <ToastContainer
         position="top-right"

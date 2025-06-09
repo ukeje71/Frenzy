@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact-us</title>
+    <!-- custom-styles -->
+    <link rel="stylesheet" href="style.css" />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "USNmjxbiQePtgf4pp",
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- section2-contact-segement -->
+    <section class="contact-segement">
+      <div class="sec1">
+        <span>
+          <!-- <p>Home /</p> -->
+          <p>Contact</p>
+        </span>
+
+        <span>
+          <h2>Let's talk about your problem</h2>
+          <p class="grey">
+            Drop us a line through the form and we'll get back to you !!
+          </p>
+        </span>
+
+        <!-- contact-form -->
+        <form action="#">
+          <input type="text" id="fullName" placeholder="First name" required />
+          <input type="text" id="fullName" placeholder="Last name" required />
+          <input
+            type="email"
+            id="email_id"
+            name="email"
+            placeholder="Email Address *"
+            required
+          />
+          <textarea
+            id="message"
+            class="textarea"
+            cols="20"
+            rows="3"
+            placeholder="Please tell us your problem ?*"
+            required
+          ></textarea>
+          <button onclick="sendEmail()">Send</button>
+        </form>
+      </div>
+
+      <div class="sec2">
+        <figure class="feedback-img">
+          <img src="Professional High Five.jpeg" alt="feedback" />
+        </figure>
+      </div>
+    </section>
+    <script src="main.js"></script>
+  </body>
+</html>

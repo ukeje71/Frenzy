@@ -1,9 +1,10 @@
-import { CheckCircle2, ChevronLeft } from "lucide-react";
+import { NavLink } from "react-router";
 import Sidebar from "../components/Sidebar";
 import React from "react";
-import { NavLink, useNavigate } from "react-router";
-const Billing = () => {
-  const navigate = useNavigate();
+import { CheckCircle2, ChevronLeft } from "lucide-react";
+
+const Payement = () => {
+  //   const navigate = useNavigate();
   return (
     <div className="flex flex-col md:flex-row  overflow-hidden">
       {/* Sidebar */}
@@ -13,8 +14,8 @@ const Billing = () => {
 
       {/* Billing_details */}
       <section className="w-full p-4">
-        <figure className="hidden text-gray-600 sm:flex flex-row gap-3 mb-4">
-          <NavLink to={"/cart"}>
+        <figure className=" hidden  text-gray-600 sm:flex flex-row gap-3 mb-4">
+          <NavLink to={"/"}>
             <p> Cart</p>
           </NavLink>
           <span className="flex flex-row items-center gap-2">
@@ -34,54 +35,49 @@ const Billing = () => {
             <p> Payement</p>
           </NavLink>
         </figure>
-        <div className="flex flex-col h-full md:p-3 lg:flex-row justify-between gap-10 ">
-          <div className="border-1 shadow-lg h-fit border-gray-200 rounded-2xl p-6">
-            <h2>Address</h2>
-            <form action="#" className="text-gray-600 ">
-              <fieldset className="flex gap-5 flex-col mt-3">
-                <label id="street">First line of address</label>
-                <input
-                  type="text"
-                  placeholder="street No."
-                  className="border-1 px-2 rounded-xl py-2 outline-0 "
-                />
+        <div className="flex flex-col h-full md:p-3 lg:flex-row lg:justify-between gap-10 ">
+          <div className="border-1 shadow-lg h-fit border-gray-200 rounded-2xl w-full p-6">
+            <h2>Payment options</h2>
+            <form action="#" className="text-gray-600">
+              <fieldset className="flex gap-5 flex-row mt-3 h-20 border rounded-xl p-2">
+                <input type="radio" id="chioce" name="street" />
+                <span>
+                  <label>First line of address</label>
+                  <p>Pay with mobile banking application or e-wallet</p>
+                </span>
               </fieldset>
 
-              <fieldset className="flex gap-5 flex-col mt-3">
-                <label id="street">Street name</label>
-                <input
-                  type="text"
-                  placeholder="Azikiwe"
-                  className="border-1 px-2 rounded-xl py-2 outline-0 "
-                />
+              <fieldset className="flex gap-5 flex-row h-20 mt-5 border rounded-xl p-2">
+                <input type="radio" id="chioce" name="street" />
+                <span>
+                  <label>Cash on delivery</label>
+                  <p>Pay with cash when your order is delivered </p>
+                </span>
               </fieldset>
 
-              <div className="flex md:gap-5 md:flex-row justify-between flex-col  mt-3">
-                <fieldset className="flex flex-col gap-5">
-                  <label id="street">Phone Number</label>
-                  <input
-                    type="text"
-                    placeholder="+234"
-                    className="border-1 px-1 rounded-xl py-2 outline-0 "
-                  />
-                </fieldset>
-                <fieldset className="flex flex-col gap-5">
-                  <label id="street">Select Shipping</label>
-                  <select
-                    name="delivery"
-                    id="delivery"
-                    className="border-1 px-2 rounded-xl py-2 outline-0 w-full"
-                  >
-                    <option value="Free Delivery">Free Delivery</option>
-                    <option value="Home Delivery">Home Delivery</option>
-                    <option value="Pick up">Pick up</option>
-                  </select>
-                </fieldset>
+              <div className="flex gap-5 flex-row justify-between mt-3 ">
+                <button className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors">
+                  Complete Order
+                </button>
               </div>
             </form>
+            <NavLink to={"/billing"}>
+              <span className="flex mb-3 text-gray-600 mt-7 gap-2">
+                <ChevronLeft />
+                <p>Back </p>
+              </span>
+            </NavLink>
           </div>
           {/* Order Summary - Responsive */}
-          <div className="w-full">
+          <div className="w-full flex flex-col gap-3">
+            <div className="shadow-lg border-gray-200 border-1 p-4 sm:p-6 rounded-xl bg-white">
+              <h2>Address</h2>
+              <div className="text-gray-600">
+                <p>Nguyen Duy Trung</p>
+                <p>Han Thuyen,Linh Trung,Thu Duc</p>
+                <p>07076354937</p>
+              </div>
+            </div>
             <div className="shadow-lg border-gray-200 border-1 p-4 sm:p-6 rounded-xl bg-white">
               <h3 className="text-lg font-bold mb-4">Order Summary</h3>
               <div className="space-y-3">
@@ -99,7 +95,7 @@ const Billing = () => {
                 </div>
               </div>
 
-              <div className="mt-4 flex">
+              {/* <div className="mt-4 flex">
                 <input
                   type="text"
                   placeholder="Gift Card / Discount code"
@@ -108,28 +104,22 @@ const Billing = () => {
                 <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-r-lg transition-colors">
                   Apply
                 </button>
-              </div>
+              </div> */}
 
               <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
                 <span className="font-medium">Total</span>
                 <span className="text-red-500 font-bold">$320.45</span>
               </div>
-
+              {/* 
               <button
                 onClick={() => {
-                  navigate("/payement");
+                  navigate("/payment");
                 }}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors"
               >
                 Check Out
-              </button>
+              </button> */}
             </div>
-            <NavLink to={"/cart"}>
-              <span className="flex text-gray-600 mt-7 gap-2">
-                <ChevronLeft />
-                <p>Back </p>
-              </span>
-            </NavLink>
           </div>
         </div>
       </section>
@@ -137,4 +127,4 @@ const Billing = () => {
   );
 };
 
-export default Billing;
+export default Payement;

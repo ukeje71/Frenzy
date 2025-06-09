@@ -1,7 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import React from "react";
 import img1 from "../assets/Jordan8.png";
-import { ChevronLeft, DivideCircle, Trash2 } from "lucide-react";
+import { CheckCircle2, ChevronLeft, DivideCircle, Trash2 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
 const Cart = () => {
   const navigate = useNavigate();
@@ -15,13 +15,33 @@ const Cart = () => {
 
       {/* Cart_details */}
       <section className="w-full p-4">
-        <figure className="text-gray-600 flex flex-row gap-3">
+        <figure className="hidden text-gray-600 sm:flex flex-row gap-3 mb-4">
           <NavLink to={"/"}>
             <p> Home</p>
           </NavLink>
-          /
+          <span className="flex flex-row items-center gap-2">
+            <div className="w-6 h-0.5 bg-black"> </div>
+            <CheckCircle2 fill="black" color="white" />
+            <div className="w-6 h-0.5 bg-black"> </div>
+          </span>
           <NavLink to={"/cart"}>
             <p> Cart</p>
+          </NavLink>
+          <span className="flex flex-row items-center gap-2">
+            <div className="w-6 h-0.5 bg-black"> </div>
+            <CheckCircle2 fill="black" color="white" />
+            <div className="w-6 h-0.5 bg-black"> </div>
+          </span>
+          <NavLink to={"/billing"}>
+            <p>Billing & Address</p>
+          </NavLink>
+          <span className="flex flex-row items-center gap-2">
+            <div className="w-6 h-0.5 bg-black"> </div>
+            <CheckCircle2 fill="black" color="white" />
+            <div className="w-6 h-0.5 bg-black"> </div>
+          </span>
+          <NavLink to={"/payement"}>
+            <p> Payement</p>
           </NavLink>
         </figure>
         {/* Cart_cover */}
