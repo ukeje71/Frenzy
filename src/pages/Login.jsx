@@ -1,13 +1,14 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FacebookIcon } from "lucide-react";
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { auth } from "../components/Firebase";
 import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate=useNavigate()
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -18,7 +19,7 @@ const Login = () => {
       autoClose: 2000,
     });
     // Redirect after 2 seconds
-    setTimeout(() => window.location.href = "/account", 2000);
+    setTimeout(() => navigate("/account"), 2000);
   } catch (error) {
     console.error("Login error:", error); // Keep for debugging
     
