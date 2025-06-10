@@ -201,13 +201,13 @@ const Cart = () => {
                 </div>
               </div>
 
-              <div className="mt-4 flex">
+              <div className="flex mt-4 ">
                 <input
                   type="text"
                   placeholder="Gift Card / Discount code"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500"
+                  className="p-2 border-1 border-gray-400 rounded-l-lg "
                 />
-                <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-r-lg transition-colors">
+                <button className="bg-green-600 hover:bg-green-700 p-2 rounded-r-lg text-white ">
                   Apply
                 </button>
               </div>

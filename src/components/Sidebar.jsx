@@ -74,11 +74,12 @@ const Sidebar = () => {
             Management
           </h2>
           <ul className="space-y-3">
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <UserCircle className="w-5 h-5" />
-              <p className="text-sm lg:text-base">User</p>
-            </li>
-
+            <NavLink to={"/login"}>
+              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <UserCircle className="w-5 h-5" />
+                <p className="text-sm lg:text-base">User</p>
+              </li>
+            </NavLink>
             <div className="relative">
               <button
                 onClick={toggleDropdown}

@@ -6,6 +6,8 @@ import Cart from "./pages/Cart";
 import Billing from "./pages/Billing";
 import Payement from "./pages/Payement";
 import Login from "./pages/Login";
+import CreateAcc from "./pages/CreateAcc";
+import Error from "./pages/Error";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/billing" element={<Billing />} />
         <Route path="/payement" element={<Payement />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/create" element={<CreateAcc />} />
+        <Route path="/error" element={<Error />} />
       </Routes>
       <ToastContainer
         position="top-right"

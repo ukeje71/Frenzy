@@ -63,7 +63,9 @@ const Header = () => {
             >
               <ShoppingCart size={30} />
             </button>
-            <button>
+            <button className="cursor-pointer"  onClick={()=>{
+              navigate("/login")
+            }}>
               <User2 size={30} />
             </button>
           </div>
@@ -126,13 +128,15 @@ const Header = () => {
         </ul>
         <ul>
           <h2 className=" font-bold text-2xl mt-5">Management</h2>
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <UserCircle />
-            <p>User</p>
-          </li>
+          <NavLink to={"/login"}>
+            <li
+              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
+              onClick={toggleMenu}
+            >
+              <UserCircle />
+              <p>User</p>
+            </li>
+          </NavLink>
           <span className="relative inline-block text-left transition-transform duration-300 ease-in-out">
             <button
               onClick={toggleDropdown}

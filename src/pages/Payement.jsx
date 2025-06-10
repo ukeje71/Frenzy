@@ -14,7 +14,15 @@ const Payement = () => {
 
       {/* Billing_details */}
       <section className="w-full p-4">
-        <figure className=" hidden  text-gray-600 sm:flex flex-row gap-3 mb-4">
+        <figure className="flex lg:hidden text-grey flex-row gap-3 mb-4 mt-4">
+             <NavLink to={"/"}>
+            <p> Home</p>
+          </NavLink>/
+             <NavLink to={"/payement"}>
+            <p> Payment</p>
+          </NavLink>
+        </figure>
+        <figure className=" hidden  text-gray-600 lg:flex flex-row gap-3 mb-4">
           <NavLink to={"/"}>
             <p> Cart</p>
           </NavLink>

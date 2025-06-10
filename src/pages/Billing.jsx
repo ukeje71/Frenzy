@@ -13,7 +13,16 @@ const Billing = () => {
 
       {/* Billing_details */}
       <section className="w-full p-4">
-        <figure className="hidden text-gray-600 sm:flex flex-row gap-3 mb-4">
+        <figure className="flex lg:hidden text-grey flex-row gap-3 mb-4 mt-4">
+          <NavLink to={"/"}>
+            <p> Home</p>
+          </NavLink>
+          /
+          <NavLink to={"/payement"}>
+            <p> Address & Billing</p>
+          </NavLink>
+        </figure>
+        <figure className="hidden text-gray-600 sm:flex flex-row md:gap-2 lg:gap-3 items-center mb-4">
           <NavLink to={"/cart"}>
             <p> Cart</p>
           </NavLink>
@@ -56,7 +65,7 @@ const Billing = () => {
                 />
               </fieldset>
 
-              <div className="flex md:gap-5 md:flex-row justify-between flex-col  mt-3">
+              <div className="flex md:gap-5 flex-col justify-between md:flex-row  mt-3">
                 <fieldset className="flex flex-col gap-5">
                   <label id="street">Phone Number</label>
                   <input
@@ -70,7 +79,7 @@ const Billing = () => {
                   <select
                     name="delivery"
                     id="delivery"
-                    className="border-1 px-2 rounded-xl py-2 outline-0 w-full"
+                    className="border-1 px-2 rounded-xl py-2 outline-0 md:w-fit"
                   >
                     <option value="Free Delivery">Free Delivery</option>
                     <option value="Home Delivery">Home Delivery</option>
