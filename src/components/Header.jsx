@@ -128,7 +128,7 @@ const Header = () => {
         </ul>
         <ul>
           <h2 className=" font-bold text-2xl mt-5">Management</h2>
-          <NavLink to={"/login"}>
+          <NavLink to={"/account"}>
             <li
               className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
               onClick={toggleMenu}

@@ -14,7 +14,7 @@ const Login = () => {
   e.preventDefault();
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    toast.success("🎉 Login Successful! Redirecting...", {
+    toast.success("Login Successful! Redirecting...", {
       position: "top-center",
       autoClose: 2000,
     });
@@ -28,15 +28,15 @@ const Login = () => {
 
     // Custom messages for common Firebase errors
     const errorMap = {
-      "auth/invalid-email": "📧 Invalid email format",
-      "auth/user-disabled": "🚫 Account disabled. Contact support",
-      "auth/user-not-found": "🔍 No account found with this email",
-      "auth/wrong-password": "🔒 Incorrect password. Try again or reset password",
-      "auth/too-many-requests": "⚠️ Too many attempts. Try again later",
-      "auth/network-request-failed": "📡 Network error. Check your connection"
+      "auth/invalid-email": " Invalid email format",
+      "auth/user-disabled": "Account disabled. Contact support",
+      "auth/user-not-found": " No account found with this email",
+      "auth/wrong-password": "Incorrect password. Try again or reset password",
+      "auth/too-many-requests": " Too many attempts. Try again later",
+      "auth/network-request-failed": " Check your Network"
     };
 
-    friendlyMessage = errorMap[errorCode] || "❌ Login failed. Please try again";
+    friendlyMessage = errorMap[errorCode] || "Login failed. Please try again";
 
     toast.error(friendlyMessage, {
       position: "top-center",

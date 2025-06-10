@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { User2 } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth,db } from "../components/Firebase";
-import { NavLink } from "react-router";
+import { auth, db } from "../components/Firebase";
+import { NavLink, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Account = () => {
-  const [userDetails, setUserDetails] = useState(null); // Fixed typo
+  const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,6 +31,16 @@ const Account = () => {
     fetchUserData();
   }, []);
 
+  async function handleLogOut() {
+    try {
+      await auth.signOut();
+      setTimeout(() => navigate("/login"), 2000);
+      console.log("User successfully Signed Out");
+      toast.success("User successfully signed Out");
+    } catch (error) {
+      console.log("Error Signing Out", error.message);
+    }
+  }
   return (
     <div className="flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar */}
@@ -62,7 +74,7 @@ const Account = () => {
                         Username
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.firstName}
+                        {userDetails.firstname} + {userDetails.lastname}
                       </td>
                     </tr>
                     <tr>
@@ -105,9 +117,25 @@ const Account = () => {
                 <p>File size maximum 1MB</p>
                 <p>Allowed file types: JPG, PNG, GIF</p>
               </div>
+              <button
+                onClick={handleLogOut}
+                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
+              >
+                Log out
+              </button>
             </div>
           ) : (
-            <p>No user data found</p>
+            <>
+              <p>No user data found</p>
+              <button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
+              >
+                Sign In
+              </button>
+            </>
           )}
         </section>
       </section>

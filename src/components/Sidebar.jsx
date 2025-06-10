@@ -35,9 +35,9 @@ const Sidebar = () => {
     <div
       className={`${
         isMobile ? "hidden" : "block"
-      } h-screen w-64 border-r border-gray-200 bg-white z-40`}
+      } h-screen w-64 border-r border-gray-400 bg-white z-40`}
     >
-      <section className="flex flex-col h-full">
+      <section className="flex flex-col h-full text-gray-600">
         {/* Scrollable content area */}
         <div className="overflow-y-auto flex-1 px-4 py-6">
           <h2 className="font-bold text-xl lg:text-2xl lg:uppercase mb-6">

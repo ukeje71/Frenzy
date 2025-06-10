@@ -13,12 +13,12 @@ const Billing = () => {
 
       {/* Billing_details */}
       <section className="w-full p-4">
-        <figure className="flex lg:hidden text-grey flex-row gap-3 mb-4 mt-4">
+        <figure className="flex lg:hidden text-grey flex-row gap-3 mb-4 mt-4 text-gray-600">
           <NavLink to={"/"}>
             <p> Home</p>
           </NavLink>
           /
-          <NavLink to={"/payement"}>
+          <NavLink to={"/billing"}>
             <p> Address & Billing</p>
           </NavLink>
         </figure>
