@@ -151,7 +151,7 @@ const Header = () => {
               <ul className="mt-2 bg-white rounded w-40 z-10 ">
                 <NavLink to={"/cart"}>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={toggleMenu}
                   >
                     Shop
@@ -159,20 +159,20 @@ const Header = () => {
                 </NavLink>
                 <NavLink to={"/"}>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={toggleMenu}
                   >
                     Product
                   </li>
                 </NavLink>
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={toggleMenu}
                 >
                   Checkout
                 </li>
                 <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer cusor-pointer"
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={toggleMenu}
                 >
                   Invoices

@@ -8,6 +8,7 @@ import Payement from "./pages/Payement";
 import Login from "./pages/Login";
 import CreateAcc from "./pages/CreateAcc";
 import Error from "./pages/Error";
+import Account from "./pages/Account";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/payement" element={<Payement />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={<CreateAcc />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/error" element={<Error />} />
       </Routes>
       <ToastContainer

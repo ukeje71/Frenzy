@@ -74,7 +74,7 @@ const Sidebar = () => {
             Management
           </h2>
           <ul className="space-y-3">
-            <NavLink to={"/login"}>
+            <NavLink to={"/account"}>
               <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
                 <UserCircle className="w-5 h-5" />
                 <p className="text-sm lg:text-base">User</p>
