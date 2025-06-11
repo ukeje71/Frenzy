@@ -74,7 +74,7 @@ const Account = () => {
                         Username
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.firstname} + {userDetails.lastname}
+                        {userDetails.firstname}  {userDetails.lastname}
                       </td>
                     </tr>
                     <tr>
@@ -90,7 +90,7 @@ const Account = () => {
                         Password
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        ••••••••
+                       {userDetails.password}
                       </td>
                     </tr>
                     <tr>

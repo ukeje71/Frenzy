@@ -17,7 +17,7 @@ const Slider = () => {
       </section> */}
       <section className="w-full h-full p-4 ">
         <Swiper
-          modules={[Autoplay, Navigation, Pagination, A11y]} // ✅ Only declared once
+          modules={[Autoplay, Navigation, Pagination, A11y]}
           spaceBetween={2}
           pagination={{ clickable: true }}
           navigation

@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
@@ -9,34 +9,59 @@ import Login from "./pages/Login";
 import CreateAcc from "./pages/CreateAcc";
 import Error from "./pages/Error";
 import Account from "./pages/Account";
+import { auth } from "./components/Firebase";
+import { useLocation } from "react-router";
 
 const App = () => {
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  };
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(
+      (user) => {
+        setUser(user);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Auth error:", error);
+        setLoading(false);
+      }
+    );
+    return () => unsubscribe(); // ← Correct cleanup
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/billing" element={<Billing />} />
-        <Route path="/payement" element={<Payement />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/payment" element={<Payement />} /> {/* Fixed typo */}
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/account" /> : <Login />}
+        />
+        <Route
+          path="/account"
+          element={user ? <Account /> : <Navigate to="/login" />}
+        />
         <Route path="/create" element={<CreateAcc />} />
-        <Route path="/account" element={<Account />} />
         <Route path="*" element={<Error />} />
       </Routes>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+      <ToastContainer />
     </div>
   );
 };
-
 export default App;

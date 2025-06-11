@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <div className="bg-teal-800 w-full ">
       <footer className=" pt-7 pb-7 md:w-[700px] lg:w-[1000px] m-auto items-center grid md:grid-cols-2 lg:grid-cols-5 text-center text-white">
-        <span class="f-span">
+        <span>
           <h3>Frenzy</h3>
           <p>Subscribe</p>
           <p>Get 10% off your first order</p>
