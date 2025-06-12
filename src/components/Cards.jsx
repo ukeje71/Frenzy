@@ -1,6 +1,7 @@
 import { Eye, Heart } from "lucide-react";
 import useCartStore from "./store/CartStore";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Cards = ({ product }) => {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -40,6 +41,7 @@ const Cards = ({ product }) => {
     try {
       console.log("Adding to cart:", productData);
       addToCart(productData);
+      toast.success(product.name + "Added to Cart");
     } catch (err) {
       console.error("Add to cart error:", err);
       setError("Failed to add item");
@@ -61,11 +63,7 @@ const Cards = ({ product }) => {
 
   return (
     <div className="p-2 shadow-xs shadow-gray-400 border-gray-200 border-1 rounded-2xl h-100 w-65">
-      {error && (
-        <div className="text-red-500 text-sm mb-2">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
       <div className="relative">
         <div className="bg-[#0000000a]">

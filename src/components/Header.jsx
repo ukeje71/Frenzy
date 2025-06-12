@@ -18,6 +18,8 @@ import {
   User2,
 } from "lucide-react";
 
+import useCartStore from "../components/store/CartStore";
+
 import { NavLink, useNavigate } from "react-router";
 
 const Header = () => {
@@ -32,8 +34,9 @@ const Header = () => {
   const toggleDropdown = () => {
     setOpen(!open);
   };
+  const { cart } = useCartStore();
   return (
-    <section className="w-full border-b-gray-600 border-b-1">
+    <section className="w-full border-b-gray-600 border-b-1 static z-">
       <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center">
         <h1 className=" text-2xl logo ">Frenzy</h1>
         <nav className="hidden flex-row items-center  md:flex gap-4 ">
@@ -57,15 +60,22 @@ const Header = () => {
               </p>
             </button>
             <button
+              className="relative"
               onClick={() => {
                 navigate("/cart");
               }}
             >
               <ShoppingCart size={30} />
+              <p className="bg-red-600 text-white rounded-full text-center w-4 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
+                {cart.length}
+              </p>
             </button>
-            <button className="cursor-pointer"  onClick={()=>{
-              navigate("/login")
-            }}>
+            <button
+              className="cursor-pointer"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
               <User2 size={30} />
             </button>
           </div>

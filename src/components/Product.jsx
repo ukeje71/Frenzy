@@ -73,7 +73,7 @@ const products = [
   },
 
   // PG2
-   {
+  {
     id: 1,
     name: "Nike Air Force 1",
     price: 115,
@@ -147,7 +147,7 @@ const products = [
   },
 
   //PG3
-   {
+  {
     id: 1,
     name: "Nike Air Force 1",
     price: 115,
