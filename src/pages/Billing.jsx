@@ -2,8 +2,18 @@ import { CheckCircle2, ChevronLeft } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import React from "react";
 import { NavLink, useNavigate } from "react-router";
+import useCartStore from "../components/store/CartStore";
+
 const Billing = () => {
   const navigate = useNavigate();
+  const { totalPrice } = useCartStore();
+
+  // Calculate cart totals
+  const subtotal = totalPrice();
+  const discount = 10;
+  const shipping = 0;
+  const total = subtotal - discount + shipping;
+
   return (
     <div className="flex flex-col md:flex-row  overflow-hidden">
       {/* Sidebar */}
@@ -96,15 +106,17 @@ const Billing = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Sub total</span>
-                  <span>$316.55</span>
+                  <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span>Home</span>
+                  <span>${shipping.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Discount</span>
-                  <span className="text-green-600">-$10</span>
+                  <span className="text-green-600">
+                    -${discount.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
@@ -121,7 +133,9 @@ const Billing = () => {
 
               <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
                 <span className="font-medium">Total</span>
-                <span className="text-red-500 font-bold">$320.45</span>
+                <span className="text-red-500 font-bold">
+                  ${total.toFixed(2)}
+                </span>
               </div>
 
               <button

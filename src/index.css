@@ -27,5 +27,6 @@ a.active {
   color: #000;
 }
 .form {
-  box-shadow: 0 0 15px rgba(0, 201, 183, 0.3);
+  /* box-shadow: 0 0 15px rgba(0, 201, 183, 0.3); */
+  box-shadow: 0 0 15px gray ;
 }
