@@ -3,9 +3,20 @@ import React from "react";
 import img1 from "../assets/Jordan8.png";
 import { CheckCircle2, ChevronLeft, DivideCircle, Trash2 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
+import useCartStore from "../components/store/CartStore";
 const Cart = () => {
   const navigate = useNavigate();
+  const { cart } = useCartStore();
 
+
+
+   {cart.map(item => (
+        <div key={item.id} className="your-cart-item-style">
+          <h3>{item.name}</h3>
+          <p>Quantity: {item.quantity}</p>
+          {/* Add remove/quantity controls as needed */}
+        </div>
+      ))}
   return (
     <div className="flex flex-col md:flex-row  overflow-hidden">
       {/* Sidebar */}
@@ -56,7 +67,7 @@ const Cart = () => {
 
               {/* Mobile/Tablet View (Stacked) */}
               <div className="lg:hidden ">
-                {[1, 2, 3].map((item) => (
+                {cart.map(item => (
                   <div key={item} className="border-b border-gray-200 p-4">
                     <div className="flex items-start">
                       <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-md overflow-hidden mr-3">
@@ -107,7 +118,7 @@ const Cart = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                  ))}
               </div>
 
               {/* Desktop View (Table) */}

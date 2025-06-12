@@ -8,10 +8,22 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import Swiperbtns from "../components/Swiperbtns";
+import products from "../components/Product"; // IMPORT YOUR PRODUCTS DATA
 
 const Home = () => {
+  // Split products into pages (9 items per page)
+  const productPages = [];
+  for (let i = 0; i < products.length; i += 9) {
+    productPages.push(products.slice(i, i + 9));
+  }
+
+  // If no product pages, fill with empty arrays to maintain 3 slides
+  while (productPages.length < 3) {
+    productPages.push([]);
+  }
+
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden">
+    <div className="flex flex-col md:flex-row overflow-hidden">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
@@ -21,7 +33,7 @@ const Home = () => {
         <Slider />
         {/* Products Section */}
         <div className="m-4 md:m-6 w-full grid grid-cols-1">
-          <span className="flex text-gray-500 flex-row w-fit  m-auto md:m-0 rounded-full border px-3 py-2 mb-4">
+          <span className="flex text-gray-500 flex-row w-fit m-auto md:m-0 rounded-full border px-3 py-2 mb-4">
             <input
               type="text"
               placeholder="Search"
@@ -42,7 +54,7 @@ const Home = () => {
           </span>
         </div>
 
-        <section className="md:w-[80vw] ">
+        <section className="md:w-[80vw]">
           {/* Swiper Product Pagination */}
           <div className="relative w-full h-full">
             <Swiper
@@ -58,49 +70,38 @@ const Home = () => {
               }}
               loop={false}
               breakpoints={{
-                // when window width is >= 640px
                 640: {
                   slidesPerView: 1,
                   spaceBetween: 20,
                 },
-                // when window width is >= 768px
                 768: {
                   slidesPerView: 1,
                   spaceBetween: 30,
                 },
               }}
             >
-              {/* Page 1 */}
-              <SwiperSlide>
-                <div className=" md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i} />
-                  ))}
-                </div>
-              </SwiperSlide>
-
-              {/* Page 2 */}
-              <SwiperSlide>
-                <div className=" md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i} />
-                  ))}
-                </div>
-              </SwiperSlide>
-
-              {/* Page 3 */}
-              <SwiperSlide>
-                <div className=" md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <Cards key={i} />
-                  ))}
-                </div>
-              </SwiperSlide>
+              {/* Map through product pages */}
+              {productPages.map((pageProducts, pageIndex) => (
+                <SwiperSlide key={pageIndex}>
+                  <div className="md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
+                    {pageProducts.length > 0 ? (
+                      pageProducts.map((product) => (
+                        <Cards key={product.id} product={product} />
+                      ))
+                    ) : (
+                      // Fallback if no products in this page
+                      <div className="col-span-3 text-center py-10">
+                        No more products available
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
               <Swiperbtns />
             </Swiper>
 
             {/* Custom Navigation */}
-            <div className="flex  items-center justify-center gap-2 md:gap-4 mt-4 md:mt-6 mb-6 md:mb-10">
+            <div className="flex items-center justify-center gap-2 md:gap-4 mt-4 md:mt-6 mb-6 md:mb-10">
               <div className="custom-pagination flex justify-center gap-1 md:gap-2 mx-2 md:mx-4"></div>
             </div>
           </div>
