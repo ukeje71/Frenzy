@@ -66,7 +66,7 @@ const Login = () => {
   }
 };
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden">
+    <div className="flex flex-col md:flex-row  overflow-hidden pt-30">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />

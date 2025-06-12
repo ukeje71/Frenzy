@@ -36,8 +36,8 @@ const Header = () => {
   };
   const { cart } = useCartStore();
   return (
-    <section className="w-full border-b-gray-600 border-b-1 static z-">
-      <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center">
+    <section className="w-full border-b-gray-600 border-b-1 fixed top-0 z-[1000] ">
+      <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center  inset-0 backdrop-blur-sm bg-white/30">
         <h1 className=" text-2xl logo ">Frenzy</h1>
         <nav className="hidden flex-row items-center  md:flex gap-4 ">
           <div className="hidden md:flex  lg:w-70 border-1 px-4 py-2 text-center bg-[#ECEBEB] rounded-full items-center  border-none">

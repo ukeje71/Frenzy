@@ -55,7 +55,7 @@ const CreateAcc = () => {
     }
   };
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden">
+    <div className="flex flex-col md:flex-row  overflow-hidden pt-30">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
@@ -166,7 +166,7 @@ const CreateAcc = () => {
           </form>
 
           <Link to={"/Login"}>
-            <p className="pt-6 text-center text-white underline text-sm">
+            <p className="pt-6 text-center text-black underline text-sm">
               Already have an account? Sign in
             </p>
           </Link>
