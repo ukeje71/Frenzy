@@ -8,13 +8,16 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import Swiperbtns from "../components/Swiperbtns";
-import products from "../components/Product"; // IMPORT YOUR PRODUCTS DATA
+import products from "../components/Product";
+import useSearchStore from "../components/store/SearchStore";// Add this import
 
 const Home = () => {
-  // Split products into pages (9 items per page)
+  const { filteredProducts } = useSearchStore(); // Add this line
+
+  // Modify this to use filteredProducts instead of products
   const productPages = [];
-  for (let i = 0; i < products.length; i += 9) {
-    productPages.push(products.slice(i, i + 9));
+  for (let i = 0; i < filteredProducts(products).length; i += 9) {
+    productPages.push(filteredProducts(products).slice(i, i + 9));
   }
 
   // If no product pages, fill with empty arrays to maintain 3 slides
@@ -38,6 +41,7 @@ const Home = () => {
               type="text"
               placeholder="Search"
               className="outline-0 w-full"
+              onChange={(e) => useSearchStore.getState().setSearchQuery(e.target.value)} // Add this
             />
             <button>
               <Search />
@@ -80,7 +84,7 @@ const Home = () => {
                 },
               }}
             >
-              {/* Map through product pages */}
+              {/* Map through filtered product pages */}
               {productPages.map((pageProducts, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
                   <div className="md:grid flex flex-col items-center sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-4 p-2 md:p-4">
@@ -89,7 +93,6 @@ const Home = () => {
                         <Cards key={product.id} product={product} />
                       ))
                     ) : (
-                      // Fallback if no products in this page
                       <div className="col-span-3 text-center py-10">
                         No more products available
                       </div>

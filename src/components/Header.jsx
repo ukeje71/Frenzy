@@ -21,6 +21,7 @@ import {
 import useCartStore from "../components/store/CartStore";
 
 import { NavLink, useNavigate } from "react-router";
+import useSearchStore from "./store/SearchStore";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ const Header = () => {
     setOpen(!open);
   };
   const { cart } = useCartStore();
+  const { setSearchQuery } = useSearchStore();
   return (
     <section className="w-full border-b-gray-600 border-b-1 fixed top-0 z-[1000] ">
       <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center  inset-0 backdrop-blur-sm bg-white/30">
@@ -47,6 +49,7 @@ const Header = () => {
               name="search"
               id="search"
               placeholder="What are you looking for"
+              onChange={(e)=>setSearchQuery(e.target.value)}
             />
             <button className="border-0 outline-0">
               <Search />

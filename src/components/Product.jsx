@@ -41,7 +41,7 @@ const products = [
   },
   {
     id: 6,
-    name: "Adidas Superstar",
+    name: "Jordans Superstar",
     price: 100,
     image: "src/assets/Puma (5).jpeg",
     color: "#000000",
@@ -49,7 +49,7 @@ const products = [
   },
   {
     id: 7,
-    name: "Nike Air Force 1",
+    name: "Sneakers",
     price: 115,
     image: "src/assets/Puma (8).jpeg",
     color: "#800080",

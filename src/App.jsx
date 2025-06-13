@@ -11,6 +11,7 @@ import Error from "./pages/Error";
 import Account from "./pages/Account";
 import { auth } from "./components/Firebase";
 import { useLocation } from "react-router";
+import WishList from "./pages/WishList";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -53,6 +54,7 @@ const App = () => {
           path="/login"
           element={user ? <Navigate to="/account" /> : <Login />}
         />
+        <Route path="wish" element={<WishList />} />
         <Route
           path="/account"
           element={user ? <Account /> : <Navigate to="/login" />}
@@ -60,7 +62,7 @@ const App = () => {
         <Route path="/create" element={<CreateAcc />} />
         <Route path="*" element={<Error />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
     </div>
   );
 };
