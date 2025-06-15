@@ -1,10 +1,9 @@
-// src/components/store/CartStore.js
 import { create } from "zustand";
 
 const useCartStore = create((set) => ({
   cart: [],
 
-  // Add to cart (or increase quantity if exists)
+  // Add to cart (or increase quantity if product exists)
   addToCart: (product) =>
     set((state) => {
       const existingItem = state.cart.find((item) => item.id === product.id);

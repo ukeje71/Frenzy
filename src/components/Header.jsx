@@ -18,10 +18,11 @@ import {
   User2,
 } from "lucide-react";
 
-import useCartStore from "../components/store/CartStore";
+import useCartStore from "./store/CartStore";
 
 import { NavLink, useNavigate } from "react-router";
 import useSearchStore from "./store/SearchStore";
+import useWishlistStore from "./store/WishlistStore";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,6 +37,7 @@ const Header = () => {
     setOpen(!open);
   };
   const { cart } = useCartStore();
+  const { WishList } = useWishlistStore();
   const { setSearchQuery } = useSearchStore();
   return (
     <section className="w-full border-b-gray-600 border-b-1 fixed top-0 z-[1000] ">
@@ -49,19 +51,21 @@ const Header = () => {
               name="search"
               id="search"
               placeholder="What are you looking for"
-              onChange={(e)=>setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button className="border-0 outline-0">
               <Search />
             </button>
           </div>
           <div className="flex gap-4">
-            <button className="relative">
-              <HeartIcon size={30} />
-              <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
-                1
-              </p>
-            </button>
+            <NavLink to={"./wish"}>
+              <button className="relative">
+                <HeartIcon size={30} />
+                <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
+                  {cart.length}
+                </p>
+              </button>
+            </NavLink>
             <button
               className="relative"
               onClick={() => {

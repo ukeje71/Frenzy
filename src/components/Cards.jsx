@@ -1,5 +1,7 @@
 import { Eye, Heart } from "lucide-react";
 import useCartStore from "./store/CartStore";
+import useWishlistStore from "../components/store/WishlistStore";
+
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -8,10 +10,19 @@ const Cards = ({ product }) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Add wishlist functionality
+  const { addToWishlist, removeFromWishlist, isInWishlist } =
+    useWishlistStore();
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
   useEffect(() => {
     console.log("Product prop received:", product); // Debug what's coming in
     setIsLoading(false);
-  }, [product]);
+    // Check if product is in wishlist when component mounts
+    if (product?.id) {
+      setIsWishlisted(isInWishlist(product.id));
+    }
+  }, [product, isInWishlist]);
 
   // More robust product data preparation
   const getProductData = () => {
@@ -48,8 +59,27 @@ const Cards = ({ product }) => {
     }
   };
 
+  // Add this function for wishlist toggle
+  const handleWishlistToggle = () => {
+    if (!productData) return;
+
+    try {
+      if (isWishlisted) {
+        removeFromWishlist(productData.id);
+        toast.success("Removed from wishlist");
+      } else {
+        addToWishlist(productData);
+        toast.success("Added to wishlist");
+      }
+      setIsWishlisted(!isWishlisted);
+    } catch (err) {
+      console.error("Wishlist error:", err);
+      toast.error("Wishlist operation failed");
+    }
+  };
+
   if (isLoading) {
-    return <div className="p-2 w-fit">Loading...</div>;
+    return <div className="text-center font-bold mb-30 mt-30">Loading...</div>;
   }
 
   if (!productData) {
@@ -62,7 +92,7 @@ const Cards = ({ product }) => {
   }
 
   return (
-    <div className="p-2 shadow-xs shadow-gray-400 border-gray-200 border-1 rounded-2xl h-100 w-65">
+    <div className="p-2 shadow-xs shadow-gray-400 border-gray-200 border-1 rounded-2xl h-105 w-65">
       {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
       <div className="relative">
@@ -79,16 +109,14 @@ const Cards = ({ product }) => {
         </div>
 
         <span className="flex flex-row p-2 items-center absolute top-0 justify-between w-full m-auto mt-4">
-          <button
-            className="bg-[#1dc2b1] font-bold px-3 py-2 text-white rounded-xl hover:bg-[#1aa995] transition-colors"
-            onClick={handleAddToCart}
-          >
-            Add
-          </button>
           <figure className="flex flex-col gap-3">
+            {" "}
             <Heart
-              size={30}
-              className="bg-white rounded-full p-1 cursor-pointer"
+              onClick={handleWishlistToggle}
+              className={
+                isWishlisted ? "text-red-500 fill-red-500" : "text-gray-600"
+              }
+              size={20}
             />
             <Eye
               size={30}
@@ -106,10 +134,16 @@ const Cards = ({ product }) => {
                 style={{ backgroundColor: productData.color }}
               />
             </div>
-            <p className="text-base font-medium">
+            <p className="text-base font-medium text-green-600">
               ${productData.price.toFixed(2)}
             </p>
           </div>
+          <button
+            className="bg-[#1dc2b1] mt-5 font-bold px-3 py-2 text-white rounded-xl hover:bg-[#1aa995] w-full transition-colors"
+            onClick={handleAddToCart}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
