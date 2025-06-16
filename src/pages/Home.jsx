@@ -26,13 +26,13 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden pt-30">
+    <div className="flex flex-col md:flex-row p-4 overflow-hidden pt-30">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
       </section>
 
-      <section className="w-full">
+      <section className="w-full sticky">
         <Slider />
         {/* Products Section */}
         <div className="m-4 md:m-6 w-full grid grid-cols-1">

@@ -58,14 +58,17 @@ const Header = () => {
             </button>
           </div>
           <div className="flex gap-4">
-            <NavLink to={"./wish"}>
-              <button className="relative">
-                <HeartIcon size={30} />
-                <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
-                  {cart.length}
-                </p>
-              </button>
-            </NavLink>
+            <button
+              className="relative"
+              onClick={() => {
+                navigate("./wish");
+              }}
+            >
+              <HeartIcon size={30} />
+              <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
+                {cart.length}
+              </p>
+            </button>
             <button
               className="relative"
               onClick={() => {
@@ -165,33 +168,23 @@ const Header = () => {
             </button>
 
             {open && (
-              <ul className="mt-2 bg-white rounded w-40 z-10 ">
-                <NavLink to={"/cart"}>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={toggleMenu}
-                  >
+              <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
+                <NavLink to={"/"}>
+                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
                     Shop
                   </li>
                 </NavLink>
-                <NavLink to={"/"}>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={toggleMenu}
-                  >
-                    Product
+                <NavLink to={"/cart"}>
+                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
+                    Cart
                   </li>
                 </NavLink>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={toggleMenu}
-                >
-                  Checkout
-                </li>
-                <li
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={toggleMenu}
-                >
+                <NavLink to={"/wish"}>
+                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
+                    Wishlist
+                  </li>
+                </NavLink>
+                <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
                   Invoices
                 </li>
               </ul>
@@ -207,14 +200,15 @@ const Header = () => {
             <MailOpenIcon />
             <p>App</p>
           </li>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <MessageSquareIcon />
-            <p>Ecommerce</p>
-          </li>
+          <NavLink to={"/contact"}>
+            <li
+              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
+              onClick={toggleMenu}
+            >
+              <MessageSquareIcon />
+              <p>Contact</p>
+            </li>
+          </NavLink>
 
           <li
             className="flex flex-row items-center gap-4 mt-4 cusor-pointer"

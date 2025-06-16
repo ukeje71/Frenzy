@@ -4,8 +4,9 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Navigation, Pagination } from "swiper/modules";
 
-import img1 from "../assets/black.jpg";
-import img2 from "../assets/pmt.jpg";
+import img1 from "../assets/Puma (1).jpeg";
+import img2 from "../assets/Puma (2).jpeg";
+import img3 from "../assets/Puma (3).jpeg";
 import Swiperbtns from "./Swiperbtns";
 const Slider = () => {
   return (
@@ -50,7 +51,7 @@ const Slider = () => {
           <SwiperSlide>
             <div className="rounded-2xl md:p-2 md:w-[75vw] h-[45vh]  md:h-[50vh] lg:h-[60vh]">
               <img
-                src={img1}
+                src={img3}
                 alt="img1"
                 className="rounded-2xl w-full h-full"
               />

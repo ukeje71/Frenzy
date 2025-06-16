@@ -24,7 +24,7 @@ li {
   -webkit-box-reflect: below -150px linear-gradient(to top, transparent, rgba(0, 0, 0, 0.3));
 }
 a.active {
-  color: #000;
+  color: green;
 }
 .form {
   /* box-shadow: 0 0 15px rgba(0, 201, 183, 0.3); */

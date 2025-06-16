@@ -6,7 +6,7 @@ import { CheckCircle2, ChevronLeft } from "lucide-react";
 const Payement = () => {
   //   const navigate = useNavigate();
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden">
+    <div className="flex flex-col pt-30 md:flex-row  overflow-hidden">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
@@ -18,7 +18,7 @@ const Payement = () => {
              <NavLink to={"/"}>
             <p> Home</p>
           </NavLink>/
-             <NavLink to={"/payement"}>
+             <NavLink to={"/payment"}>
             <p> Payment</p>
           </NavLink>
         </figure>
@@ -39,8 +39,8 @@ const Payement = () => {
             <CheckCircle2 fill="black" color="white" />
             <div className="w-6 h-0.5 bg-black"> </div>
           </span>
-          <NavLink to={"/payement"}>
-            <p> Payement</p>
+          <NavLink to={"/payment"}>
+            <p> Payment</p>
           </NavLink>
         </figure>
         <div className="flex flex-col h-full md:p-3 lg:flex-row lg:justify-between gap-10 ">

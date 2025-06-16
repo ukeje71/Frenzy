@@ -49,8 +49,8 @@ const Billing = () => {
             <CheckCircle2 fill="black" color="white" />
             <div className="w-6 h-0.5 bg-black"> </div>
           </span>
-          <NavLink to={"/payement"}>
-            <p> Payement</p>
+          <NavLink to={"/payment"}>
+            <p> Payment</p>
           </NavLink>
         </figure>
         <div className="flex flex-col h-full md:p-3 lg:flex-row justify-between gap-10 ">
@@ -140,7 +140,7 @@ const Billing = () => {
 
               <button
                 onClick={() => {
-                  navigate("/payement");
+                  navigate("/payment");
                 }}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-colors"
               >

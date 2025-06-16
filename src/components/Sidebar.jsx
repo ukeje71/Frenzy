@@ -35,7 +35,7 @@ const Sidebar = () => {
     <div
       className={`${
         isMobile ? "hidden" : "block"
-      } h-screen w-64 border-r border-gray-400 bg-white z-40`}
+      } h-screen w-64  shadow-2xl bg-white z-40`}
     >
       <section className="flex flex-col h-full text-gray-600">
         {/* Scrollable content area */}
@@ -96,19 +96,21 @@ const Sidebar = () => {
 
               {open && (
                 <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
-                  <NavLink to={"/cart"}>
+                  <NavLink to={"/"}>
                     <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
                       Shop
                     </li>
                   </NavLink>
-                  <NavLink to={"/"}>
+                  <NavLink to={"/cart"}>
                     <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                      Product
+                      Cart
                     </li>
                   </NavLink>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Checkout
-                  </li>
+                  <NavLink to={"/wish"}>
+                    <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
+                      Wishlist
+                    </li>
+                  </NavLink>
                   <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
                     Invoices
                   </li>
@@ -119,11 +121,12 @@ const Sidebar = () => {
 
           <h2 className="font-bold text-xl lg:text-2xl mt-8 mb-4">Other</h2>
           <ul className="space-y-3">
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <MailOpenIcon className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Mail</p>
-            </li>
-
+            <NavLink to={"/contact"}>
+              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <MailOpenIcon className="w-5 h-5" />
+                <p className="text-sm lg:text-base">Mail</p>
+              </li>
+            </NavLink>
             <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
               <MessageSquareIcon className="w-5 h-5" />
               <p className="text-sm lg:text-base">Messages</p>

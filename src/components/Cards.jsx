@@ -36,7 +36,10 @@ const Cards = ({ product }) => {
       name: product.name || "Unnamed Product",
       price: Number(product.price) || 0,
       image: product.image || "/default-product.jpg",
-      color: product.color || "#CCCCCC",
+      color1: product.color1 || "#CCCCCC",
+      color2: product.color2 || "#CCCCCC",
+      color3: product.color3 || "#CCCCCC",
+
       size: product.size || "N/A",
     };
   };
@@ -92,7 +95,7 @@ const Cards = ({ product }) => {
   }
 
   return (
-    <div className="p-2 shadow-xs shadow-gray-400 border-gray-200 border-1 rounded-2xl h-105 w-65">
+    <div className="p-2 shadow-xs  shadow-gray-400 border-gray-200 border-1 rounded-2xl h-105 md:w-65">
       {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
       <div className="relative">
@@ -114,9 +117,9 @@ const Cards = ({ product }) => {
             <Heart
               onClick={handleWishlistToggle}
               className={
-                isWishlisted ? "text-red-500 fill-red-500" : "text-gray-600"
+                isWishlisted ? "bg-white rounded-full p-1  text-red-500 fill-red-500" : "rounded-full p-1 cursor-pointer text-gray-600"
               }
-              size={20}
+              size={30}
             />
             <Eye
               size={30}
@@ -128,23 +131,32 @@ const Cards = ({ product }) => {
         <div className="w-full max-w-xs">
           <p className="text-lg font-semibold">{productData.name}</p>
           <div className="flex justify-between items-center mt-2">
-            <div className="flex items-center">
-              <div
-                className="w-5 h-5 rounded-full z-30 border border-gray-300"
-                style={{ backgroundColor: productData.color }}
-              />
+            <div className="flex items-center flex-row">
+             
+                <div
+                  className=" w-5 h-5 rounded-full z-30"
+                  style={{ backgroundColor: productData.color1 }}
+                ></div>
+                <div
+                  className=" w-5 h-5 rounded-full -ml-2 z-20"
+                  style={{ backgroundColor: productData.color2 }}
+                ></div>
+                <div
+                  className="w-5 h-5 rounded-full -ml-2 z-10"
+                  style={{ backgroundColor: productData.color3 }}
+                ></div>
             </div>
             <p className="text-base font-medium text-green-600">
               ${productData.price.toFixed(2)}
             </p>
           </div>
+        </div>
           <button
             className="bg-[#1dc2b1] mt-5 font-bold px-3 py-2 text-white rounded-xl hover:bg-[#1aa995] w-full transition-colors"
             onClick={handleAddToCart}
           >
             Add to Cart
           </button>
-        </div>
       </div>
     </div>
   );
