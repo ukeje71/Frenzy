@@ -5,8 +5,11 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../components/Firebase";
 import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import PhotoUpload from "./PhotoUpload";
 
 const Account = () => {
+  // Profile upload
+
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -104,18 +107,8 @@ const Account = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="text-center flex flex-col gap-3 items-center mb-10">
-                <div className="bg-gray-200 h-35 w-30 flex items-center justify-center">
-                  <User2
-                    size={80}
-                    className="text-green-500 font-extralight w-20"
-                  />
-                </div>
-                <p className="border-1 border-gray-300 px-3 py-2 rounded-sm text-sm w-fit">
-                  Select Image
-                </p>
-                <p>File size maximum 1MB</p>
-                <p>Allowed file types: JPG, PNG, GIF</p>
+              <div>
+                <PhotoUpload />
               </div>
               <button
                 onClick={handleLogOut}
