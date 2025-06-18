@@ -55,7 +55,7 @@ const Cards = ({ product }) => {
     try {
       console.log("Adding to cart:", productData);
       addToCart(productData);
-      toast.success(product.name + "Added to Cart");
+      toast.success(product.name + " Added to Cart");
     } catch (err) {
       console.error("Add to cart error:", err);
       setError("Failed to add item");
@@ -117,7 +117,9 @@ const Cards = ({ product }) => {
             <Heart
               onClick={handleWishlistToggle}
               className={
-                isWishlisted ? "bg-white rounded-full p-1  text-red-500 fill-red-500" : "rounded-full p-1 cursor-pointer text-gray-600"
+                isWishlisted
+                  ? "bg-white rounded-full p-1  text-red-500 fill-red-500"
+                  : "rounded-full p-1 cursor-pointer text-gray-600"
               }
               size={30}
             />
@@ -132,31 +134,30 @@ const Cards = ({ product }) => {
           <p className="text-lg font-semibold">{productData.name}</p>
           <div className="flex justify-between items-center mt-2">
             <div className="flex items-center flex-row">
-             
-                <div
-                  className=" w-5 h-5 rounded-full z-30"
-                  style={{ backgroundColor: productData.color1 }}
-                ></div>
-                <div
-                  className=" w-5 h-5 rounded-full -ml-2 z-20"
-                  style={{ backgroundColor: productData.color2 }}
-                ></div>
-                <div
-                  className="w-5 h-5 rounded-full -ml-2 z-10"
-                  style={{ backgroundColor: productData.color3 }}
-                ></div>
+              <div
+                className=" w-5 h-5 rounded-full z-30"
+                style={{ backgroundColor: productData.color1 }}
+              ></div>
+              <div
+                className=" w-5 h-5 rounded-full -ml-2 z-20"
+                style={{ backgroundColor: productData.color2 }}
+              ></div>
+              <div
+                className="w-5 h-5 rounded-full -ml-2 z-10"
+                style={{ backgroundColor: productData.color3 }}
+              ></div>
             </div>
             <p className="text-base font-medium text-green-600">
               ${productData.price.toFixed(2)}
             </p>
           </div>
         </div>
-          <button
-            className="bg-[#1dc2b1] mt-5 font-bold px-3 py-2 text-white rounded-xl hover:bg-[#1aa995] w-full transition-colors"
-            onClick={handleAddToCart}
-          >
-            Add to Cart
-          </button>
+        <button
+          className="bg-[#1dc2b1] mt-5 font-bold px-3 py-2 text-white rounded-xl hover:bg-[#1aa995] w-full transition-colors"
+          onClick={handleAddToCart}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );

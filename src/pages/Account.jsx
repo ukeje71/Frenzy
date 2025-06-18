@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { User2 } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../components/Firebase";
 import { NavLink, useNavigate } from "react-router";
