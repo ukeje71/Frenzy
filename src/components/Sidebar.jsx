@@ -5,7 +5,7 @@ import {
   Calendar1,
   ChartSplineIcon,
   ChevronDown,
-  CircleGaugeIcon,
+  HomeIcon,
   Landmark,
   MailOpenIcon,
   MessageSquareIcon,
@@ -44,15 +44,18 @@ const Sidebar = () => {
             General
           </h2>
           <ul className="space-y-3">
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <CircleGaugeIcon className="w-5 h-5" />
-              <p className="text-sm lg:text-base">App</p>
-            </li>
-
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <BriefcaseIcon className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Ecommerce</p>
-            </li>
+            <NavLink to={"/"}>
+              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <HomeIcon className="w-5 h-5" />
+                <p className="text-sm lg:text-base">Home</p>
+              </li>
+            </NavLink>
+            <NavLink to={"/new"}>
+              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <BriefcaseIcon className="w-5 h-5" />
+                <p className="text-sm lg:text-base">New Product</p>
+              </li>
+            </NavLink>
 
             <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
               <ChartSplineIcon className="w-5 h-5" />

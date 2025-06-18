@@ -56,7 +56,7 @@ const Contact = () => {
             <textarea
               name="feedback"
               rows={4}
-              placeholder="Pleasee tell us your problem ?*"
+              placeholder="Please tell us your problem ?*"
               id="feedback"
               className="p-2 resize-y border-1 rounded-sm outline-none"
             ></textarea>

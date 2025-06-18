@@ -3,7 +3,7 @@ import {
   BriefcaseBusiness,
   BriefcaseIcon,
   ChartSplineIcon,
-  CircleGaugeIcon,
+  HomeIcon,
   Landmark,
   UserCircle,
   ShoppingCart,
@@ -106,21 +106,24 @@ const Header = () => {
           <h2 className="font-bold text-xl">General</h2>
         </div>
         <ul className="mt-4">
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <CircleGaugeIcon />
-            <p>App</p>
-          </li>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <BriefcaseIcon />
-            <p>Ecommerce</p>
-          </li>
+          <NavLink to={"/"}>
+            <li
+              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
+              onClick={toggleMenu}
+            >
+              <HomeIcon />
+              <p>Home</p>
+            </li>
+          </NavLink>
+          <NavLink to={"/new"}>
+            <li
+              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
+              onClick={toggleMenu}
+            >
+              <BriefcaseIcon />
+              <p>Create Product</p>
+            </li>
+          </NavLink>
 
           <li
             className="flex flex-row items-center gap-4 mt-4 cusor-pointer"

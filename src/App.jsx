@@ -13,6 +13,7 @@ import { auth } from "./components/Firebase";
 import { useLocation } from "react-router";
 import WishList from "./pages/WishList";
 import Contact from "./Contact";
+import NewProducts from "./pages/NewProducts";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -61,9 +62,9 @@ const App = () => {
           path="/account"
           element={user ? <Account /> : <Navigate to="/login" />}
         />
-        <Route path="rat" element={<Login/>}/>
         <Route path="/create" element={<CreateAcc />} />
-        <Route path="/contact" element={<Contact/>}/>
+        <Route path="new" element={<NewProducts />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Error />} />
       </Routes>
       <ToastContainer position="top-center" />

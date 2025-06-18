@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../components/Firebase";
 import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import PhotoUpload from "./PhotoUpload";
+import PhotoUpload from "../components/PhotoUpload"
 
 const Account = () => {
   // Profile upload
