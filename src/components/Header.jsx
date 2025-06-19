@@ -37,7 +37,7 @@ const Header = () => {
     setOpen(!open);
   };
   const { cart } = useCartStore();
-  const { WishList } = useWishlistStore();
+ const { wishlist } = useWishlistStore();
   const { setSearchQuery } = useSearchStore();
   return (
     <section className="w-full border-b-gray-600 border-b-1 fixed top-0 z-[1000] ">
@@ -66,7 +66,7 @@ const Header = () => {
             >
               <HeartIcon size={30} />
               <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
-                {cart.length}
+                {wishlist.length}
               </p>
             </button>
             <button
