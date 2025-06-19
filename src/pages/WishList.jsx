@@ -31,24 +31,24 @@ const WishList = () => {
 
         {/* Wishlist Items Grid - Now showing only wishlisted products */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {wishlist.map((product) => (
+          {wishlist.map((Product) => (
             <div
-              key={product.id}
+              key={Product.id}
               className="relative border rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               {/* Product Image */}
               <div className="bg-gray-100 rounded-lg overflow-hidden mb-3 h-48 flex items-center justify-center">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={Product.image}
+                  alt={Product.name}
                   className="w-full h-full object-contain"
                 />
               </div>
 
               {/* Product Info */}
-              <h3 className="font-medium text-lg">{product.name}</h3>
+              <h3 className="font-medium text-lg">{Product.name}</h3>
               <p className="text-green-600 font-bold mt-1">
-                ${product.price.toFixed(2)}
+                ${Product.price.toFixed(2)}
               </p>
 
               {/* Wishlist Button - Now shows filled heart for wishlisted items */}
