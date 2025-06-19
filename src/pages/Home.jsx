@@ -8,7 +8,7 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import Swiperbtns from "../components/Swiperbtns";
-import products from "../components/Product";
+import Products from "../components/Product";
 import useSearchStore from "../components/store/SearchStore";// Add this import
 
 const Home = () => {
@@ -16,8 +16,8 @@ const Home = () => {
 
   // Modify this to use filteredProducts instead of products
   const productPages = [];
-  for (let i = 0; i < filteredProducts(products).length; i += 9) {
-    productPages.push(filteredProducts(products).slice(i, i + 9));
+  for (let i = 0; i < filteredProducts(Products).length; i += 9) {
+    productPages.push(filteredProducts(Products).slice(i, i + 9));
   }
 
   // If no product pages, fill with empty arrays to maintain 3 slides
