@@ -159,13 +159,45 @@ const NewProducts = () => {
                 <select
                   name="delivery"
                   id="delivery"
-                //   className="border-none px-2 w-300 rounded-xl py-2 outline-0 md:w-fit"
+                  //   className="border-none px-2 w-300 rounded-xl py-2 outline-0 md:w-fit"
                 >
-                  <datalist value="Free Delivery" className="w-30">Free Delivery</datalist>
-                  <datalist value="Home Delivery" className="w-30">Home Delivery</datalist>
-                  <datalist value="Pick up" className="w-30">Pick up</datalist>
+                  <datalist value="Free Delivery" className="w-30">
+                    Free Delivery
+                  </datalist>
+                  <datalist value="Home Delivery" className="w-30">
+                    Home Delivery
+                  </datalist>
+                  <datalist value="Pick up" className="w-30">
+                    Pick up
+                  </datalist>
                 </select>
               </fieldset>
+
+              <div>
+                <h4 className="font-bold text-[20px] text-gray-600">
+                  Regular Price
+                </h4>
+                <input
+                  type="text"
+                  placeholder="$35.70"
+                  className="outline-none text-gray-600 w-full border-1 p-3 rounded-xl "
+                />
+                <h4 className="font-bold text-[20px]  text-gray-600">
+                  Sales Price
+                </h4>
+                <input
+                  type="text"
+                  placeholder="$35.70"
+                  className="outline-none text-gray-600 w-full border-1 p-3 rounded-xl "
+                />
+              </div>
+
+              <button
+                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
+                onClick={handleClickUpload}
+              >
+                Create Product
+              </button>
             </form>
           </div>
         </div>
