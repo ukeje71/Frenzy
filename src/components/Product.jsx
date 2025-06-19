@@ -1,4 +1,4 @@
-const products = [
+const Products = [
   {
     id: 1,
     name: "Nike Air Force 1",
@@ -549,4 +549,4 @@ const products = [
   },
 ];
 
-export default products;
+export default Products;
