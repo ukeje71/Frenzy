@@ -7,11 +7,11 @@ const useWishlistStore = create(
     (set, get) => ({
       wishlist: [],
 
-      // Add item to wishlist (if not already present)
+      // Add item to wishlist
       addToWishlist: (product) =>
         set((state) => {
           const exists = state.wishlist.some((item) => item.id === product.id);
-          if (exists) return state; // Don't add duplicates
+          if (exists) return state;
           return { wishlist: [...state.wishlist, product] };
         }),
 
@@ -21,31 +21,33 @@ const useWishlistStore = create(
           wishlist: state.wishlist.filter((item) => item.id !== id),
         })),
 
-      // Check if item is in wishlist
-      isInWishlist: (id) => get().wishlist.some((item) => item.id === id),
+      // Move single item to cart
+      moveToCart: (product) => {
+        const { removeFromWishlist } = get();
+        useCartStore.getState().addToCart(product);
+        removeFromWishlist(product.id);
+        return product;
+      },
 
-      // Move all wishlist items to cart
+      // Move all items to cart
       moveAllToCart: () => {
         const { wishlist } = get();
         const { addToCart } = useCartStore.getState();
-
-        // Add each item to cart
+        
         wishlist.forEach((product) => {
           addToCart(product);
         });
 
-        // Clear wishlist
         set({ wishlist: [] });
-
-        return wishlist.length; // Return count of moved items
+        return wishlist.length;
       },
 
-      // Clear entire wishlist
-      clearWishlist: () => set({ wishlist: [] }),
+      // Check if item is in wishlist
+      isInWishlist: (id) => get().wishlist.some((item) => item.id === id),
     }),
     {
       name: "wishlist-storage",
-      getStorage: () => localStorage, // Explicitly use localStorage
+      getStorage: () => localStorage,
     }
   )
 );

@@ -82,7 +82,7 @@ const Cards = ({ product }) => {
   };
 
   if (isLoading) {
-    return <div className="text-center font-bold mb-30 mt-30">Loading...</div>;
+    return <div className="text-center font-bold mb-30 mt-30 loader"></div>;
   }
 
   if (!productData) {

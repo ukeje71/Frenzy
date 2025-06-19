@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cart";
@@ -10,7 +10,6 @@ import CreateAcc from "./pages/CreateAcc";
 import Error from "./pages/Error";
 import Account from "./pages/Account";
 import { auth } from "./components/Firebase";
-import { useLocation } from "react-router";
 import WishList from "./pages/WishList";
 import Contact from "./Contact";
 import NewProducts from "./pages/NewProducts";
@@ -25,6 +24,7 @@ const App = () => {
 
     return null;
   };
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,36 +39,91 @@ const App = () => {
         setLoading(false);
       }
     );
-    return () => unsubscribe(); // ← Correct cleanup
+    return () => unsubscribe();
   }, []);
 
-  if (loading)
-    return <div className="text-center font-bold mb-30 mt-30">Loading...</div>;
+  if (loading) return <div className="loader"></div>;
+
+  // Define public routes that don't require authentication
+  const publicRoutes = ["/", "/login", "/create", "/contact"];
+
+  // Create a protected route component
+  const ProtectedRoute = ({ children }) => {
+    const location = useLocation();
+
+    if (!user && !publicRoutes.includes(location.pathname)) {
+      return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+    return children;
+  };
 
   return (
     <div>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/billing" element={<Billing />} />
-        <Route path="/payment" element={<Payement />} /> {/* Fixed typo */}
         <Route
           path="/login"
           element={user ? <Navigate to="/account" /> : <Login />}
         />
-        <Route path="wish" element={<WishList />} />
+        <Route path="/create" element={<CreateAcc />} />
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/billing"
+          element={
+            <ProtectedRoute>
+              <Billing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <Payement />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/account"
-          element={user ? <Account /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/create" element={<CreateAcc />} />
-        <Route path="new" element={<NewProducts />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/wish"
+          element={
+            <ProtectedRoute>
+              <WishList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <ProtectedRoute>
+              <NewProducts />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<Error />} />
       </Routes>
       <ToastContainer position="top-center" />
     </div>
   );
 };
+
 export default App;

@@ -65,7 +65,7 @@ const Account = () => {
         <section className="pt-10 lg:w-[70vw] m-auto">
           <h2>Account Details</h2>
           {loading ? (
-            <p>Loading...</p>
+            <span className="loader"></span>
           ) : userDetails ? (
             <div className="flex flex-col-reverse lg:flex-row justify-between mt-5 items-center">
               <div className="overflow-x-auto">
