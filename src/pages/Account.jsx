@@ -4,11 +4,10 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../components/Firebase";
 import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import PhotoUpload from "../components/PhotoUpload"
+import PhotoUpload from "../components/PhotoUpload";
+import { User, Mail, Lock, Phone, LogOut } from "lucide-react";
 
 const Account = () => {
-  // Profile upload
-
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,98 +36,132 @@ const Account = () => {
     try {
       await auth.signOut();
       setTimeout(() => navigate("/login"), 2000);
-      console.log("User successfully Signed Out");
-      toast.success("User successfully signed Out");
+      toast.success("Successfully signed out");
     } catch (error) {
       console.log("Error Signing Out", error.message);
     }
   }
+
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden pt-30">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-30">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
       </section>
 
-      {/* Billing_details */}
-      <section className="w-full p-4">
-        <figure className="flex text-gray-600 flex-row gap-3 mb-4 mt-4">
-          <NavLink to="/">
-            <p>Home</p>
-          </NavLink>
-          /
-          <NavLink to="/account">
-            <p>Address & Billing</p>
-          </NavLink>
-        </figure>
+      {/* Main Content */}
+      <section className="w-full p-4 md:p-8">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-8">
+          <div className="flex items-center text-sm text-gray-600">
+            <NavLink to="/" className="hover:text-green-600 transition-colors">
+              Home
+            </NavLink>
+            <span className="mx-2">/</span>
+            <span className="font-medium text-green-600">Account</span>
+          </div>
+        </div>
 
-        <section className="pt-10 lg:w-[70vw] m-auto">
-          <h2>Account Details</h2>
-          {loading ? (
-            <span className="loader"></span>
-          ) : userDetails ? (
-            <div className="flex flex-col-reverse lg:flex-row justify-between mt-5 items-center">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600 font-medium">
-                        Username
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.firstname} {userDetails.lastname}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600 font-medium">
-                        Email
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.email}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600 font-medium">
-                        Password
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.password}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600 font-medium">
-                        Phone Number
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-black">
-                        {userDetails.phoneNumber}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <button
-                onClick={handleLogOut}
-                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
-              >
-                Log out
-              </button>
+        {/* Account Section */}
+        <section className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
               <div>
+                <h2 className="text-2xl font-bold text-gray-800">Account Details</h2>
+                <p className="text-gray-600 mt-1">View and manage your account information</p>
+              </div>
+              <div className="mt-4 md:mt-0 flex items-center space-x-4">
                 <PhotoUpload />
+                <button
+                  onClick={handleLogOut}
+                  className="flex items-center bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg transition-colors"
+                >
+                  <LogOut size={18} className="mr-2" />
+                  Sign Out
+                </button>
               </div>
             </div>
-          ) : (
-            <>
-              <p>No user data found</p>
-              {/* <button
-                onClick={() => {
-                  navigate("/login");
-                }}
-                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
-              >
-                Sign In
-              </button> */}
-            </>
-          )}
+
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+              </div>
+            ) : userDetails ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* User Info Card */}
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-green-100 p-3 rounded-full mr-4">
+                        <User className="text-green-600" size={20} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-500">Full Name</h3>
+                        <p className="text-lg font-medium text-gray-800">
+                          {userDetails.firstname} {userDetails.lastname}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Email Card */}
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-100 p-3 rounded-full mr-4">
+                        <Mail className="text-blue-600" size={20} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-500">Email Address</h3>
+                        <p className="text-lg font-medium text-gray-800">
+                          {userDetails.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Password Card */}
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-purple-100 p-3 rounded-full mr-4">
+                        <Lock className="text-purple-600" size={20} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-500">Password</h3>
+                        <p className="text-lg font-medium text-gray-800">
+                          ••••••••
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Phone Card */}
+                  <div className="bg-gray-50 rounded-lg p-5">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-orange-100 p-3 rounded-full mr-4">
+                        <Phone className="text-orange-600" size={20} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-500">Phone Number</h3>
+                        <p className="text-lg font-medium text-gray-800">
+                          {userDetails.phoneNumber || "Not provided"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-600 mb-4">No user data found</p>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+                >
+                  Sign In
+                </button>
+              </div>
+            )}
+          </div>
         </section>
       </section>
     </div>

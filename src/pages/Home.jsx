@@ -1,69 +1,110 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import Slider from "../components/Slider";
-import { Search } from "lucide-react";
+import { Search, ChevronRight, Star, Box } from "lucide-react";
 import Cards from "../components/Cards";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import Swiperbtns from "../components/Swiperbtns";
 import Products from "../components/Product";
-import useSearchStore from "../components/store/SearchStore";// Add this import
+import useSearchStore from "../components/store/SearchStore";
 
 const Home = () => {
-  const { filteredProducts } = useSearchStore(); // Add this line
-
-  // Modify this to use filteredProducts instead of products
+  const { filteredProducts, setSearchQuery } = useSearchStore();
   const productPages = [];
+
+  // Create product pages with 9 items each
   for (let i = 0; i < filteredProducts(Products).length; i += 9) {
     productPages.push(filteredProducts(Products).slice(i, i + 9));
   }
 
-  // If no product pages, fill with empty arrays to maintain 3 slides
+  // Ensure minimum 3 slides for better swiper experience
   while (productPages.length < 3) {
     productPages.push([]);
   }
 
   return (
-    <div className="flex flex-col md:flex-row p-4 overflow-hidden pt-30">
-      {/* Sidebar */}
-      <section className="w-fit">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-30">
+      {/* Sidebar - Hidden on mobile */}
+      <div className="hidden md:block">
         <Sidebar />
-      </section>
+      </div>
 
-      <section className="w-full sticky">
-        <Slider />
-        {/* Products Section */}
-        <div className="m-4 md:m-6 w-full grid grid-cols-1">
-          <span className="flex text-gray-500 flex-row w-fit m-auto md:m-0 rounded-full border px-3 py-2 mb-4">
-            <input
-              type="text"
-              placeholder="Search"
-              className="outline-0 w-full"
-              onChange={(e) => useSearchStore.getState().setSearchQuery(e.target.value)} // Add this
-            />
-            <button>
-              <Search />
-            </button>
-          </span>
+      {/* Main Content */}
+      <main className="flex-1 overflow-x-hidden ">
+        {/* Hero Slider */}
+        <div className="relative">
+          <Slider />
 
-          <span className="flex items-center gap-2 md:mt-3">
-            <div className="w-3 h-8 md:w-5 md:h-10 bg-green-800"></div>
-            <p className="text-green-800 text-sm md:text-base">Products</p>
-          </span>
-
-          <span className="font-bold text-xl md:text-2xl mt-3 md:mt-4">
-            Explore our products.
-          </span>
+          {/* Mobile Search - Sticky at top */}
+          <div className="md:hidden sticky top-0 z-10 bg-white p-4 shadow-sm">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search
+                className="absolute left-3 top-2.5 text-gray-400"
+                size={18}
+              />
+            </div>
+          </div>
         </div>
 
-        <section className="md:w-[80vw]">
-          {/* Swiper Product Pagination */}
-          <div className="relative w-full h-full">
+        {/* Content Container */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          {/* Desktop Search */}
+          <div className="hidden md:block mb-8 max-w-md mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search for shoes, clothes, accessories..."
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 shadow-sm"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search
+                className="absolute left-4 top-3.5 text-gray-400"
+                size={20}
+              />
+              <button className="absolute right-1.5 top-1.5 bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors">
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+            <div className="mb-4 sm:mb-0">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-10 bg-green-600 rounded"></div>
+                <h2 className="text-green-600 font-semibold">Our Products</h2>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
+                Discover Amazing Deals
+              </h1>
+            </div>
+            <button className="flex items-center text-green-600 hover:text-green-700 font-medium">
+              View all <ChevronRight size={18} className="ml-1" />
+            </button>
+          </div>
+
+          {/* Featured Products */}
+          <div className="mb-2">
+            <div className="flex items-center gap-2 text-yellow-500 mb-3">
+              <Star size={18} className="fill-current" />
+              <span className="font-medium text-gray-800">Featured Items</span>
+            </div>
+          </div>
+
+          {/* Products Slider */}
+          <div className="relative">
             <Swiper
-              modules={[Pagination]}
-              spaceBetween={10}
+              modules={[Pagination, Autoplay]}
+              spaceBetween={24}
               slidesPerView={1}
               pagination={{
                 clickable: true,
@@ -72,29 +113,22 @@ const Home = () => {
                   return `<span class="${className} swiper-pagination-bullet-custom"></span>`;
                 },
               }}
-              loop={false}
-              breakpoints={{
-                640: {
-                  slidesPerView: 1,
-                  spaceBetween: 20,
-                },
-                768: {
-                  slidesPerView: 1,
-                  spaceBetween: 30,
-                },
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
               }}
+              loop={true}
             >
-              {/* Map through filtered product pages */}
               {productPages.map((pageProducts, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {pageProducts.length > 0 ? (
-                      pageProducts.map((Product) => (
-                        <Cards key={Product.id} product={Product} />
+                      pageProducts.map((product) => (
+                        <Cards key={product.id} product={product} />
                       ))
                     ) : (
-                      <div className="col-span-3 text-center py-10">
-                        No more products available
+                      <div className="col-span-full text-center py-10 text-gray-500">
+                        No products found matching your search
                       </div>
                     )}
                   </div>
@@ -103,13 +137,37 @@ const Home = () => {
               <Swiperbtns />
             </Swiper>
 
-            {/* Custom Navigation */}
-            <div className="flex items-center justify-center gap-2 md:gap-4 mt-4 md:mt-6 mb-6 md:mb-10">
-              <div className="custom-pagination flex justify-center gap-1 md:gap-2 mx-2 md:mx-4"></div>
+            {/* Custom Pagination */}
+            <div className="flex justify-center mt-8">
+              <div className="custom-pagination flex gap-2"></div>
             </div>
           </div>
-        </section>
-      </section>
+
+          {/* Categories Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Shop by Category
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {["Men", "Women", "Kids", "Shoes", "Accessories"].map(
+                (category) => (
+                  <div
+                    key={category}
+                    className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center hover:shadow-md transition-shadow cursor-pointer"
+                  >
+                    <div className="bg-gray-100 rounded-lg w-16 h-16 mx-auto mb-3 flex items-center justify-center">
+                      <Box size={24} className="text-gray-600" />
+                    </div>
+                    <span className="font-medium text-gray-700">
+                      {category}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

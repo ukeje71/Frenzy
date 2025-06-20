@@ -1,204 +1,268 @@
 import React, { useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { Camera, CheckCircle2 } from "lucide-react";
+import { Camera, CheckCircle2, PlusCircle, Tag, Box, Ruler, User, DollarSign } from "lucide-react";
 import { NavLink } from "react-router";
 
 const NewProducts = () => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef(null);
 
   const handleClickUpload = () => {
     inputRef.current.click();
   };
 
-  const handleImageChange = () => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
-    console.log(file);
-    setImage(event.target.files[0]);
+    if (file) {
+      setImage(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.match('image.*')) {
+      setImage(file);
+    }
   };
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden pt-30">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-30">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
       </section>
 
-      {/* Cart_details */}
-      <section className="w-full p-4">
-        <figure className="hidden text-gray-600 sm:flex flex-row gap-3 mb-4">
-          <NavLink to="/">
-            <p>Home</p>
-          </NavLink>
-          <span className="flex flex-row items-center gap-2">
-            <div className="w-6 h-0.5 bg-black"></div>
-            <CheckCircle2 fill="black" color="white" />
-            <div className="w-6 h-0.5 bg-black"></div>
-          </span>
-          <NavLink to="/new">
-            <p>New Products</p>
-          </NavLink>
-        </figure>
+      {/* Main Content */}
+      <section className="w-full p-4 md:p-8">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-8">
+          <div className="flex items-center text-sm text-gray-600">
+            <NavLink to="/" className="hover:text-green-600 transition-colors">
+              Home
+            </NavLink>
+            <div className="flex items-center mx-2">
+              <div className="w-4 h-px bg-gray-300"></div>
+              <CheckCircle2 className="mx-1" size={14} fill="#10B981" color="white" />
+              <div className="w-4 h-px bg-gray-300"></div>
+            </div>
+            <span className="font-medium text-green-600">New Product</span>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800 mt-2">Add New Product</h1>
+        </div>
 
-        {/* Cart_cover */}
-        <div className="flex flex-col lg:flex-row justify-eve items-start gap-6 px-4 sm:px-6 lg:px-8 py-6">
-          <div className="border-1 border-gray-400 w-[65%] p-3 rounded-xl">
-            <form action="#" className="flex flex-col gap-5">
-              <input
-                type="text"
-                placeholder="Product Name "
-                className="w-full outline-none border-gray-600 border-1 p-3 rounded-xl font-bold"
-              />
-              <fieldset className="flex flex-col gap-4">
-                <label
-                  htmlFor="description"
-                  className="font-bold text-gray-600"
-                >
-                  Product-Description
-                </label>
+        {/* Form Container */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left Column - Main Product Info */}
+          <div className="lg:w-2/3 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <PlusCircle size={20} className="text-green-600" />
+              Product Information
+            </h2>
+
+            <form className="space-y-5">
+              {/* Product Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter product name"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                />
+              </div>
+
+              {/* Product Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product Description</label>
                 <textarea
                   rows="4"
-                  type="text"
-                  id="description"
-                  placeholder="Write something Awesome "
-                  className="resize-none rounded-xl border-1 border-gray-600 outline-none p-3"
-                />
-              </fieldset>
+                  placeholder="Write a compelling product description"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all resize-none"
+                ></textarea>
+              </div>
 
-              <fieldset className="flex flex-col  w-full">
-                <label htmlFor="file" className="font-bold text-gray-600">
-                  Image
-                </label>
-                <div className="border-1 border-gray-600 rounded-xl p-3 px-10 flex flex-row items-center justify-between w-full">
-                  <fieldset>
-                    <div
-                      className="bg-gray-200  rounded-full h-35 w-35 flex items-center  justify-center cursor-pointer"
-                      onClick={handleClickUpload}
-                    >
-                      {image ? (
-                        <img
-                          src={URL.createObjectURL(image)}
-                          size={80}
-                          className="text-green-500 w-full rounded-full font-extralight h-full"
-                        />
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <div 
+                  className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all
+                    ${isDragging ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-green-400'}
+                  `}
+                  onClick={handleClickUpload}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  {image ? (
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt="Product preview"
+                        className="w-40 h-40 object-contain rounded-lg mb-3"
+                      />
+                      <p className="text-sm text-gray-600">{image.name}</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center text-gray-500">
+                      <Camera size={40} className="mb-3 text-gray-400" />
+                      {isDragging ? (
+                        <p className="text-green-500">Drop image here</p>
                       ) : (
-                        <Camera
-                          size={80}
-                          className="text-green-500 font-extralight w-20"
-                        />
+                        <>
+                          <p className="font-medium">Click to upload or drag and drop</p>
+                          <p className="text-xs mt-1">PNG, JPG, GIF up to 5MB</p>
+                        </>
                       )}
                     </div>
-                    <label htmlFor="image-upload-input">
-                      {image ? image.name : "Choose an image "}
-                    </label>
-                  </fieldset>
-                  <fieldset>
-                    <p>Select FIles</p>
-                    <input
-                      type="file"
-                      name="file"
-                      id="file"
-                      className="hidden"
-                      onChange={handleImageChange}
-                      ref={inputRef}
-                    />
-                    <p className="gap-2 flex flex-row">
-                      Drop files or
-                      <b
-                        onClick={handleClickUpload}
-                        className="underline text-green-600 cursor-pointer"
-                      >
-                        Click
-                      </b>
-                      through your machine
-                    </p>
-                  </fieldset>
+                  )}
                 </div>
-              </fieldset>
+                <input
+                  type="file"
+                  className="hidden"
+                  ref={inputRef}
+                  onChange={handleImageChange}
+                  accept="image/*"
+                />
+              </div>
             </form>
           </div>
-          {/*  */}
-          <div className="w-[35%] rounded-xl p-5 border-gray-600 border-1">
-            <form action="#" className=" flex flex-col gap-5">
-              <fieldset className="flex flex-row  gap-2 text-gray-600 ">
-                <input type="radio" name="stock" id="stock" className="w-9" />
-                <label htmlFor="stock" className="font-bold text-[20px]">
-                  In stock
-                </label>
-              </fieldset>
-              <fieldset className="flex flex-col w-full gap-5">
-                <input
-                  type="text"
-                  placeholder="Product Id"
-                  className="outline-none text-gray-600  border-1 p-3 rounded-xl "
-                />
-                <input
-                  type="text"
-                  placeholder="Product Size "
-                  className="outline-none text-gray-600  border-1 p-3 rounded-xl"
-                />
-              </fieldset>
-              <h4 className="font-bold text-[20px] text-gray-600">Gender</h4>
-              <div className="text-gray-600 flex flex-row gap-6">
-                <fieldset className="flex flex-row gap-2 ">
-                  <input type="radio" name="type" id="Male" className="w-9" />
-                  <label htmlFor="type">Male</label>
-                </fieldset>
-                <fieldset className="flex flex-row gap-2">
-                  <input type="radio" name="type" id="Female" className="w-9" />
-                  <label htmlFor="type">Female</label>
-                </fieldset>
-                <fieldset className="flex flex-row gap-2">
-                  <input type="radio" name="type" id="Kids" className="w-9" />
-                  <label htmlFor="type">Kids</label>
-                </fieldset>
-              </div>
-              <h4 className="font-bold text-[20px] text-gray-600">Category</h4>
-              <fieldset className="flex flex-col gap-5 ">
-                <label id="street">Select Shipping</label>
-                <select
-                  name="delivery"
-                  id="delivery"
-                  //   className="border-none px-2 w-300 rounded-xl py-2 outline-0 md:w-fit"
-                >
-                  <datalist value="Free Delivery" className="w-30">
-                    Free Delivery
-                  </datalist>
-                  <datalist value="Home Delivery" className="w-30">
-                    Home Delivery
-                  </datalist>
-                  <datalist value="Pick up" className="w-30">
-                    Pick up
-                  </datalist>
-                </select>
-              </fieldset>
 
-              <div>
-                <h4 className="font-bold text-[20px] text-gray-600">
-                  Regular Price
-                </h4>
-                <input
-                  type="text"
-                  placeholder="$35.70"
-                  className="outline-none text-gray-600 w-full border-1 p-3 rounded-xl "
-                />
-                <h4 className="font-bold text-[20px]  text-gray-600">
-                  Sales Price
-                </h4>
-                <input
-                  type="text"
-                  placeholder="$35.70"
-                  className="outline-none text-gray-600 w-full border-1 p-3 rounded-xl "
-                />
+          {/* Right Column - Product Details */}
+          <div className="lg:w-1/3 space-y-6">
+            {/* Stock Status */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Box size={20} className="text-green-600" />
+                Inventory
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="inStock"
+                    name="stock"
+                    className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
+                  />
+                  <label htmlFor="inStock" className="ml-3 block text-sm font-medium text-gray-700">
+                    In Stock
+                  </label>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Product ID</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. PROD-001"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Size</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. M, L, XL"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  />
+                </div>
               </div>
+            </div>
 
-              <button
-                className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
-                onClick={handleClickUpload}
-              >
-                Create Product
-              </button>
-            </form>
+            {/* Category */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Tag size={20} className="text-green-600" />
+                Category
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        id="male"
+                        name="gender"
+                        className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
+                      />
+                      <label htmlFor="male" className="ml-2 block text-sm text-gray-700">
+                        Male
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        id="female"
+                        name="gender"
+                        className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
+                      />
+                      <label htmlFor="female" className="ml-2 block text-sm text-gray-700">
+                        Female
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        id="kids"
+                        name="gender"
+                        className="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
+                      />
+                      <label htmlFor="kids" className="ml-2 block text-sm text-gray-700">
+                        Kids
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Method</label>
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all">
+                    <option>Free Delivery</option>
+                    <option>Home Delivery</option>
+                    <option>Pick Up</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <DollarSign size={20} className="text-green-600" />
+                Pricing
+              </h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Regular Price ($)</label>
+                  <input
+                    type="text"
+                    placeholder="35.70"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Sale Price ($)</label>
+                  <input
+                    type="text"
+                    placeholder="29.99"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg">
+              Create Product
+            </button>
           </div>
         </div>
       </section>

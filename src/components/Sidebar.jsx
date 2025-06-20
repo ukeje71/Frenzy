@@ -31,120 +31,298 @@ const Sidebar = () => {
     setOpen(!open);
   };
 
+  // Icon color management
+  const getIconColor = (isActive) => 
+    isActive ? "text-green-600" : "text-gray-500 group-hover:text-green-500";
+
   return (
-    <div
-      className={`${
-        isMobile ? "hidden" : "block"
-      } h-screen w-64  shadow-2xl bg-white z-40`}
-    >
-      <section className="flex flex-col h-full text-gray-600">
+    <div className={`${isMobile ? "hidden" : "block"} h-screen w-64 bg-white shadow-xl z-40 border-r border-gray-100`}>
+      <section className="flex flex-col h-full">
         {/* Scrollable content area */}
         <div className="overflow-y-auto flex-1 px-4 py-6">
-          <h2 className="font-bold text-xl lg:text-2xl lg:uppercase mb-6">
-            General
-          </h2>
-          <ul className="space-y-3">
-            <NavLink to={"/"}>
-              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <HomeIcon className="w-5 h-5" />
-                <p className="text-sm lg:text-base">Home</p>
-              </li>
-            </NavLink>
-            <NavLink to={"/new"}>
-              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <BriefcaseIcon className="w-5 h-5" />
-                <p className="text-sm lg:text-base">New Product</p>
-              </li>
-            </NavLink>
+          {/* Logo/Branding */}
+          <div className="mb-8 px-2">
+            <h1 className="text-2xl font-bold text-gray-800">
+              <span className="text-green-600">Frenzy</span> Admin
+            </h1>
+          </div>
 
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <ChartSplineIcon className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Analytics</p>
-            </li>
+          {/* Menu Sections */}
+          <div className="space-y-8">
+            {/* General Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-2">
+                General
+              </h2>
+              <ul className="space-y-1">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <HomeIcon className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Dashboard</span>
+                    </>
+                  )}
+                </NavLink>
 
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <Landmark className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Banking</p>
-            </li>
+                <NavLink
+                  to="/new"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <BriefcaseIcon className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">New Product</span>
+                    </>
+                  )}
+                </NavLink>
 
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <BriefcaseBusiness className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Booking</p>
-            </li>
-          </ul>
+                <NavLink
+                  to="#"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <ChartSplineIcon className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Analytics</span>
+                    </>
+                  )}
+                </NavLink>
 
-          <h2 className="font-bold text-xl lg:text-2xl lg:uppercase mt-8 mb-4">
-            Management
-          </h2>
-          <ul className="space-y-3">
-            <NavLink to={"/account"}>
-              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <UserCircle className="w-5 h-5" />
-                <p className="text-sm lg:text-base">User</p>
-              </li>
-            </NavLink>
-            <div className="relative">
-              <button
-                onClick={toggleDropdown}
-                className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors text-left"
-              >
-                <BriefcaseBusiness className="w-5 h-5" />
-                <p className="text-sm lg:text-base flex-1">Admin</p>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    open ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+                <NavLink
+                  to="#"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Landmark className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Banking</span>
+                    </>
+                  )}
+                </NavLink>
 
-              {open && (
-                <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
-                  <NavLink to={"/"}>
-                    <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                      Shop
-                    </li>
-                  </NavLink>
-                  <NavLink to={"/cart"}>
-                    <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                      Cart
-                    </li>
-                  </NavLink>
-                  <NavLink to={"/wish"}>
-                    <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                      Wishlist
-                    </li>
-                  </NavLink>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Invoices
-                  </li>
-                </ul>
-              )}
+                <NavLink
+                  to="#"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <BriefcaseBusiness className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Booking</span>
+                    </>
+                  )}
+                </NavLink>
+              </ul>
             </div>
-          </ul>
 
-          <h2 className="font-bold text-xl lg:text-2xl mt-8 mb-4">Other</h2>
-          <ul className="space-y-3">
-            <NavLink to={"/contact"}>
-              <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <MailOpenIcon className="w-5 h-5" />
-                <p className="text-sm lg:text-base">Mail</p>
-              </li>
-            </NavLink>
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <MessageSquareIcon className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Messages</p>
-            </li>
+            {/* Management Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-2">
+                Management
+              </h2>
+              <ul className="space-y-1">
+                <NavLink
+                  to="/account"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <UserCircle className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">User</span>
+                    </>
+                  )}
+                </NavLink>
 
-            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <Calendar1 className="w-5 h-5" />
-              <p className="text-sm lg:text-base">Calendar</p>
-            </li>
-          </ul>
+                <div className="relative">
+                  <button
+                    onClick={toggleDropdown}
+                    className={`w-full group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      open ? "bg-gray-50" : "hover:bg-gray-50"
+                    } text-gray-600`}
+                  >
+                    <BriefcaseBusiness
+                      className={`w-5 h-5 ${open ? "text-green-600" : "text-gray-500 group-hover:text-green-500"}`}
+                    />
+                    <span className="text-sm font-medium flex-1 text-left">
+                      Admin
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        open ? "rotate-180" : ""
+                      } text-gray-400 group-hover:text-gray-600`}
+                    />
+                  </button>
+
+                  {open && (
+                    <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
+                      <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                          `block px-3 py-1.5 text-sm rounded transition-colors ${
+                            isActive
+                              ? "bg-green-100 text-green-600"
+                              : "hover:bg-gray-100 text-gray-600"
+                          }`
+                        }
+                      >
+                        Shop
+                      </NavLink>
+                      <NavLink
+                        to="/cart"
+                        className={({ isActive }) =>
+                          `block px-3 py-1.5 text-sm rounded transition-colors ${
+                            isActive
+                              ? "bg-green-100 text-green-600"
+                              : "hover:bg-gray-100 text-gray-600"
+                          }`
+                        }
+                      >
+                        Cart
+                      </NavLink>
+                      <NavLink
+                        to="/wish"
+                        className={({ isActive }) =>
+                          `block px-3 py-1.5 text-sm rounded transition-colors ${
+                            isActive
+                              ? "bg-green-100 text-green-600"
+                              : "hover:bg-gray-100 text-gray-600"
+                          }`
+                        }
+                      >
+                        Wishlist
+                      </NavLink>
+                      <NavLink
+                        to="#"
+                        className={({ isActive }) =>
+                          `block px-3 py-1.5 text-sm rounded transition-colors ${
+                            isActive
+                              ? "bg-green-100 text-green-600"
+                              : "hover:bg-gray-100 text-gray-600"
+                          }`
+                        }
+                      >
+                        Invoices
+                      </NavLink>
+                    </ul>
+                  )}
+                </div>
+              </ul>
+            </div>
+
+            {/* Other Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-2">
+                Other
+              </h2>
+              <ul className="space-y-1">
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <MailOpenIcon className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Mail</span>
+                    </>
+                  )}
+                </NavLink>
+
+                <NavLink
+                  to="#"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <MessageSquareIcon className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Messages</span>
+                    </>
+                  )}
+                </NavLink>
+
+                <NavLink
+                  to="#"
+                  className={({ isActive }) =>
+                    `group flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-50 text-gray-600"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Calendar1 className={`w-5 h-5 ${getIconColor(isActive)}`} />
+                      <span className="text-sm font-medium">Calendar</span>
+                    </>
+                  )}
+                </NavLink>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        {/* Optional footer area (non-scrollable) */}
+        {/* Footer */}
         <div className="p-4 border-t border-gray-200">
-          <p className="text-xs text-gray-500">© 2023 Frenzy</p>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <UserCircle className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-800">Admin User</p>
+              <p className="text-xs text-gray-500">admin@example.com</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">© {new Date().getFullYear()} Frenzy Dashboard</p>
         </div>
       </section>
     </div>

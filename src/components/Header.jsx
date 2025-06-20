@@ -1,248 +1,295 @@
 import React, { useState } from "react";
 import {
-  BriefcaseBusiness,
-  BriefcaseIcon,
-  ChartSplineIcon,
-  HomeIcon,
-  Landmark,
-  UserCircle,
+  Home,
+  Briefcase,
+  BarChart2,
+  Banknote,
+  Calendar,
+  Mail,
+  MessageSquare,
   ShoppingCart,
   Menu,
   X,
-  Calendar1,
   ChevronDown,
-  HeartIcon,
-  MailOpenIcon,
-  MessageSquareIcon,
+  Heart,
   Search,
-  User2,
+  User,
+  ShoppingBag
 } from "lucide-react";
-
-import useCartStore from "./store/CartStore";
-
 import { NavLink, useNavigate } from "react-router";
+import useCartStore from "./store/CartStore";
 import useSearchStore from "./store/SearchStore";
 import useWishlistStore from "./store/WishlistStore";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const [open, setOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setOpen(!open);
-  };
   const { cart } = useCartStore();
- const { wishlist } = useWishlistStore();
+  const { wishlist } = useWishlistStore();
   const { setSearchQuery } = useSearchStore();
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
   return (
-    <section className="w-full border-b-gray-600 border-b-1 fixed top-0 z-[1000] ">
-      <div className="flex justify-between  p-4 md:w-[700px] lg:w-full m-auto h-[6rem] items-center  inset-0 backdrop-blur-sm bg-white/30">
-        <h1 className=" text-2xl logo ">Frenzy</h1>
-        <nav className="hidden flex-row items-center  md:flex gap-4 ">
-          <div className="hidden md:flex  lg:w-70 border-1 px-4 py-2 text-center bg-[#ECEBEB] rounded-full items-center  border-none">
-            <input
-              className="border-0 outline-0 w-full"
-              type="search"
-              name="search"
-              id="search"
-              placeholder="What are you looking for"
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button className="border-0 outline-0">
-              <Search />
-            </button>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* Glassmorphism Header Bar */}
+      <div className="backdrop-blur-lg bg-white/30 border-b border-white/20 shadow-sm">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          {/* Logo with improved styling */}
+          <div 
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <ShoppingBag className="text-green-600 w-8 h-8" />
+            <h1 className="ml-2 text-2xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
+              Frenzy
+            </h1>
           </div>
-          <div className="flex gap-4">
-            <button
-              className="relative"
-              onClick={() => {
-                navigate("./wish");
-              }}
-            >
-              <HeartIcon size={30} />
-              <p className="bg-red-600 text-white rounded-full text-center w-5 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
-                {wishlist.length}
-              </p>
-            </button>
-            <button
-              className="relative"
-              onClick={() => {
-                navigate("/cart");
-              }}
-            >
-              <ShoppingCart size={30} />
-              <p className="bg-red-600 text-white rounded-full text-center w-4 px-1 py-0.5 text-xs font-bold absolute right-0 bottom-3">
-                {cart.length}
-              </p>
-            </button>
-            <button
-              className="cursor-pointer"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              <User2 size={30} />
-            </button>
-          </div>
-        </nav>
-        {/* Hamburger Button */}
-        <button className="md:hidden" onClick={toggleMenu}>
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            {/* Enhanced Search Bar */}
+            <div className="relative w-64">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="text-gray-500 h-5 w-5" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-full bg-white/70 focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* Action Icons with improved counters */}
+            <div className="flex items-center space-x-5">
+              <button 
+                onClick={() => navigate("/wish")}
+                className="relative p-1.5 rounded-full hover:bg-white/20 transition-colors"
+              >
+                <Heart className="text-gray-700 w-6 h-6" />
+                {wishlist.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {wishlist.length}
+                  </span>
+                )}
+              </button>
+
+              <button 
+                onClick={() => navigate("/cart")}
+                className="relative p-1.5 rounded-full hover:bg-white/20 transition-colors"
+              >
+                <ShoppingCart className="text-gray-700 w-6 h-6" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cart.length}
+                  </span>
+                )}
+              </button>
+
+              <button 
+                onClick={() => navigate("/login")}
+                className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
+              >
+                <User className="text-gray-700 w-6 h-6" />
+              </button>
+            </div>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2 rounded-full hover:bg-white/20 transition-colors"
+            onClick={toggleMenu}
+          >
+            {menuOpen ? (
+              <X className="text-gray-700 w-6 h-6" />
+            ) : (
+              <Menu className="text-gray-700 w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Slide-In Menu */}
+      {/* Mobile Menu with improved glassmorphism */}
       <div
-        className={` overflow-y-scroll fixed top-0 left-0 h-full w-2/3 max-w-sm bg-white px-6 text-gray-600 z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 w-72 bg-white/95 backdrop-blur-xl shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="mt-4  flex justify-between items-center ">
-          <h2 className="font-bold text-xl">General</h2>
-        </div>
-        <ul className="mt-4">
-          <NavLink to={"/"}>
-            <li
-              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-              onClick={toggleMenu}
-            >
-              <HomeIcon />
-              <p>Home</p>
-            </li>
-          </NavLink>
-          <NavLink to={"/new"}>
-            <li
-              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-              onClick={toggleMenu}
-            >
-              <BriefcaseIcon />
-              <p>Create Product</p>
-            </li>
-          </NavLink>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <ChartSplineIcon />
-            <p>Analytics</p>
-          </li>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <Landmark />
-            <p>Banking</p>
-          </li>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <BriefcaseBusiness />
-            <p>Booking</p>
-          </li>
-        </ul>
-        <ul>
-          <h2 className=" font-bold text-2xl mt-5">Management</h2>
-          <NavLink to={"/account"}>
-            <li
-              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-              onClick={toggleMenu}
-            >
-              <UserCircle />
-              <p>User</p>
-            </li>
-          </NavLink>
-          <span className="relative inline-block text-left transition-transform duration-300 ease-in-out">
-            <button
-              onClick={toggleDropdown}
-              className="font-semibold  gap-4 outline-none flex flex-row items-center mt-4"
-            >
-              <BriefcaseBusiness />
-              <p>Admin</p>
-              <ChevronDown />
+        <div className="h-full overflow-y-auto p-6">
+          {/* Mobile Menu Header */}
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex items-center">
+              <ShoppingBag className="text-green-600 w-8 h-8" />
+              <h1 className="ml-2 text-2xl font-bold text-gray-800">Frenzy</h1>
+            </div>
+            <button onClick={toggleMenu} className="p-1">
+              <X className="text-gray-500 w-6 h-6" />
             </button>
+          </div>
 
-            {open && (
-              <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
-                <NavLink to={"/"}>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Shop
-                  </li>
-                </NavLink>
-                <NavLink to={"/cart"}>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Cart
-                  </li>
-                </NavLink>
-                <NavLink to={"/wish"}>
-                  <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                    Wishlist
-                  </li>
-                </NavLink>
-                <li className="px-3 py-1.5 text-sm rounded hover:bg-gray-100 transition-colors">
-                  Invoices
-                </li>
+          {/* Mobile Search */}
+          <div className="mb-8 relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="text-gray-500 h-5 w-5" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Menu Sections */}
+          <div className="space-y-8">
+            {/* General Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                General
+              </h2>
+              <ul className="space-y-2">
+                {[
+                  { icon: <Home className="w-5 h-5" />, text: "Home", path: "/" },
+                  { icon: <Briefcase className="w-5 h-5" />, text: "New Product", path: "/new" },
+                  { icon: <BarChart2 className="w-5 h-5" />, text: "Analytics", path: "#" },
+                  { icon: <Banknote className="w-5 h-5" />, text: "Banking", path: "#" },
+                  { icon: <Calendar className="w-5 h-5" />, text: "Booking", path: "#" },
+                ].map((item) => (
+                  <NavLink
+                    key={item.text}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                        isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                      }`
+                    }
+                    onClick={toggleMenu}
+                  >
+                    {item.icon}
+                    <span>{item.text}</span>
+                  </NavLink>
+                ))}
               </ul>
-            )}
-          </span>
-        </ul>
+            </div>
 
-        <ul>
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <MailOpenIcon />
-            <p>App</p>
-          </li>
-          <NavLink to={"/contact"}>
-            <li
-              className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-              onClick={toggleMenu}
+            {/* Management Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                Management
+              </h2>
+              <ul className="space-y-2">
+                <NavLink
+                  to="/account"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                    }`
+                  }
+                  onClick={toggleMenu}
+                >
+                  <User className="w-5 h-5" />
+                  <span>User</span>
+                </NavLink>
+
+                <div className="relative">
+                  <button
+                    onClick={toggleDropdown}
+                    className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      dropdownOpen ? "bg-gray-100" : "hover:bg-gray-100"
+                    } text-gray-700`}
+                  >
+                    <Briefcase className="w-5 h-5" />
+                    <span className="flex-1 text-left">Admin</span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        dropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {dropdownOpen && (
+                    <ul className="ml-10 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
+                      {[
+                        { text: "Shop", path: "/" },
+                        { text: "Cart", path: "/cart" },
+                        { text: "Wishlist", path: "/wish" },
+                        { text: "Invoices", path: "#" },
+                      ].map((item) => (
+                        <NavLink
+                          key={item.text}
+                          to={item.path}
+                          className={({ isActive }) =>
+                            `block px-3 py-1.5 text-sm rounded transition-colors ${
+                              isActive ? "bg-green-100 text-green-600" : "hover:bg-gray-200 text-gray-700"
+                            }`
+                          }
+                          onClick={toggleMenu}
+                        >
+                          {item.text}
+                        </NavLink>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </ul>
+            </div>
+
+            {/* Other Section */}
+            <div>
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                Other
+              </h2>
+              <ul className="space-y-2">
+                {[
+                  { icon: <Mail className="w-5 h-5" />, text: "Mail", path: "#" },
+                  { icon: <MessageSquare className="w-5 h-5" />, text: "Contact", path: "/contact" },
+                  { icon: <Calendar className="w-5 h-5" />, text: "Ecommerce", path: "#" },
+                ].map((item) => (
+                  <NavLink
+                    key={item.text}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                        isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                      }`
+                    }
+                    onClick={toggleMenu}
+                  >
+                    {item.icon}
+                    <span>{item.text}</span>
+                  </NavLink>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Auth Buttons */}
+          <div className="mt-8 space-y-3">
+            <button
+              onClick={() => {
+                navigate("/login");
+                toggleMenu();
+              }}
+              className="w-full bg-gray-900 hover:bg-gray-800 text-white py-2.5 rounded-lg text-sm font-medium transition-colors"
             >
-              <MessageSquareIcon />
-              <p>Contact</p>
-            </li>
-          </NavLink>
-
-          <li
-            className="flex flex-row items-center gap-4 mt-4 cusor-pointer"
-            onClick={toggleMenu}
-          >
-            <Calendar1 />
-            <p>Ecommerce</p>
-          </li>
-        </ul>
-        <div className="flex flex-col gap-4 p-4 mt-4">
-          <button
-            onClick={() => {
-              navigate("/Login");
-              toggleMenu();
-            }}
-            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-700 hover:text-white"
-          >
-            Sign In
-          </button>
-          <button
-            onClick={() => {
-              navigate("/create");
-              toggleMenu();
-            }}
-            className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-700 hover:text-white"
-          >
-            Get Started
-          </button>
+              Sign In
+            </button>
+            <button
+              onClick={() => {
+                navigate("/create");
+                toggleMenu();
+              }}
+              className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-2.5 rounded-lg text-sm font-medium transition-colors"
+            >
+              Get Started
+            </button>
+          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
 };
 
