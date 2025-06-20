@@ -106,27 +106,27 @@ const Account = () => {
                   </tbody>
                 </table>
               </div>
-              <div>
-                <PhotoUpload />
-              </div>
               <button
                 onClick={handleLogOut}
                 className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
               >
                 Log out
               </button>
+              <div>
+                <PhotoUpload />
+              </div>
             </div>
           ) : (
             <>
               <p>No user data found</p>
-              <button
+              {/* <button
                 onClick={() => {
                   navigate("/login");
                 }}
                 className="bg-green-500 text-white p-2 rounded-sm mt-4 cursor-pointer"
               >
                 Sign In
-              </button>
+              </button> */}
             </>
           )}
         </section>
