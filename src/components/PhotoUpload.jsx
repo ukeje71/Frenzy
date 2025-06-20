@@ -30,7 +30,7 @@ const PhotoUpload = () => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file && file.type.match('image.*')) {
+    if (file && file.type.match("image.*")) {
       setImage(file);
     }
   };
@@ -43,10 +43,14 @@ const PhotoUpload = () => {
   return (
     <div className="flex flex-col items-center gap-4 p-6">
       {/* Upload Area */}
-      <div 
+      <div
         className={`relative w-40 h-40 rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer transition-all
-          ${isDragging ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:border-green-400'}
-          ${image ? 'border-transparent' : ''}
+          ${
+            isDragging
+              ? "border-green-500 bg-green-50"
+              : "border-gray-300 hover:border-green-400"
+          }
+          ${image ? "border-transparent" : ""}
         `}
         onClick={handleClickUpload}
         onDragOver={handleDragOver}
@@ -100,7 +104,7 @@ const PhotoUpload = () => {
         className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
       >
         <Upload size={16} />
-        {image ? 'Change Photo' : 'Upload Photo'}
+        {image ? "Change Photo" : "Upload Photo"}
       </button>
 
       {/* Instructions */}

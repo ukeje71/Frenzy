@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "./components/Sidebar";
 import { NavLink } from "react-router";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Twitter, FacebookIcon, Instagram, Linkedin } from "lucide-react";
 
 const Contact = () => {
   return (
@@ -30,8 +30,8 @@ const Contact = () => {
             Let's Talk About Your Project
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We're here to help and answer any questions you might have. Drop us a 
-            message and we'll get back to you as soon as possible.
+            We're here to help and answer any questions you might have. Drop us
+            a message and we'll get back to you as soon as possible.
           </p>
         </div>
 
@@ -39,8 +39,10 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="lg:w-1/3 space-y-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">Contact Information</h2>
-              
+              <h2 className="text-xl font-bold text-gray-800 mb-6">
+                Contact Information
+              </h2>
+
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="bg-green-100 p-3 rounded-full">
@@ -78,13 +80,22 @@ const Contact = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Follow Us</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">
+                Follow Us
+              </h2>
               <div className="flex gap-4">
-                {['Twitter', 'Facebook', 'Instagram', 'LinkedIn'].map((social) => (
-                  <div key={social} className="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer">
-                    <span className="text-gray-700 text-sm font-medium">{social[0]}</span>
-                  </div>
-                ))}
+                {[<Twitter/>, <FacebookIcon/>,<Instagram/>,<Linkedin/>].map(
+                  (social) => (
+                    <div
+                      key={social}
+                      className="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                    >
+                      <span className="text-gray-700 text-sm font-medium">
+                        {social}
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -92,12 +103,17 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="lg:w-2/3">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
-              
+              <h2 className="text-xl font-bold text-gray-800 mb-6">
+                Send Us a Message
+              </h2>
+
               <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="firstName"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       First Name
                     </label>
                     <input
@@ -108,7 +124,10 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="lastName"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Last Name*
                     </label>
                     <input
@@ -122,7 +141,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email Address*
                   </label>
                   <input
@@ -135,7 +157,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Your Message*
                   </label>
                   <textarea

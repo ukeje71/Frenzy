@@ -14,7 +14,7 @@ import {
   Heart,
   Search,
   User,
-  ShoppingBag
+  ShoppingBag,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
 import useCartStore from "./store/CartStore";
@@ -38,7 +38,7 @@ const Header = () => {
       <div className="backdrop-blur-lg bg-white/30 border-b border-white/20 shadow-sm">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo with improved styling */}
-          <div 
+          <div
             className="flex items-center cursor-pointer"
             onClick={() => navigate("/")}
           >
@@ -58,14 +58,14 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-full bg-white/70 focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                className="block w-full pl-10 pr-3 py-2 rounded-full bg-white/70 focus:bg-white focus:ring-2 ring-green-500 border-green-500 border-1 outline-none transition-all duration-200"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             {/* Action Icons with improved counters */}
             <div className="flex items-center space-x-5">
-              <button 
+              <button
                 onClick={() => navigate("/wish")}
                 className="relative p-1.5 rounded-full hover:bg-white/20 transition-colors"
               >
@@ -77,7 +77,7 @@ const Header = () => {
                 )}
               </button>
 
-              <button 
+              <button
                 onClick={() => navigate("/cart")}
                 className="relative p-1.5 rounded-full hover:bg-white/20 transition-colors"
               >
@@ -89,7 +89,7 @@ const Header = () => {
                 )}
               </button>
 
-              <button 
+              <button
                 onClick={() => navigate("/login")}
                 className="p-1.5 rounded-full hover:bg-white/20 transition-colors"
               >
@@ -99,7 +99,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="md:hidden p-2 rounded-full hover:bg-white/20 transition-colors"
             onClick={toggleMenu}
           >
@@ -152,18 +152,40 @@ const Header = () => {
               </h2>
               <ul className="space-y-2">
                 {[
-                  { icon: <Home className="w-5 h-5" />, text: "Home", path: "/" },
-                  { icon: <Briefcase className="w-5 h-5" />, text: "New Product", path: "/new" },
-                  { icon: <BarChart2 className="w-5 h-5" />, text: "Analytics", path: "#" },
-                  { icon: <Banknote className="w-5 h-5" />, text: "Banking", path: "#" },
-                  { icon: <Calendar className="w-5 h-5" />, text: "Booking", path: "#" },
+                  {
+                    icon: <Home className="w-5 h-5" />,
+                    text: "Home",
+                    path: "/",
+                  },
+                  {
+                    icon: <Briefcase className="w-5 h-5" />,
+                    text: "New Product",
+                    path: "/new",
+                  },
+                  {
+                    icon: <BarChart2 className="w-5 h-5" />,
+                    text: "Analytics",
+                    path: "#",
+                  },
+                  {
+                    icon: <Banknote className="w-5 h-5" />,
+                    text: "Banking",
+                    path: "#",
+                  },
+                  {
+                    icon: <Calendar className="w-5 h-5" />,
+                    text: "Booking",
+                    path: "#",
+                  },
                 ].map((item) => (
                   <NavLink
                     key={item.text}
                     to={item.path}
                     className={({ isActive }) =>
                       `flex items-center gap-3 p-2 rounded-lg transition-colors ${
-                        isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                        isActive
+                          ? "bg-green-50 text-green-600"
+                          : "hover:bg-gray-100 text-gray-700"
                       }`
                     }
                     onClick={toggleMenu}
@@ -185,7 +207,9 @@ const Header = () => {
                   to="/account"
                   className={({ isActive }) =>
                     `flex items-center gap-3 p-2 rounded-lg transition-colors ${
-                      isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                      isActive
+                        ? "bg-green-50 text-green-600"
+                        : "hover:bg-gray-100 text-gray-700"
                     }`
                   }
                   onClick={toggleMenu}
@@ -223,7 +247,9 @@ const Header = () => {
                           to={item.path}
                           className={({ isActive }) =>
                             `block px-3 py-1.5 text-sm rounded transition-colors ${
-                              isActive ? "bg-green-100 text-green-600" : "hover:bg-gray-200 text-gray-700"
+                              isActive
+                                ? "bg-green-100 text-green-600"
+                                : "hover:bg-gray-200 text-gray-700"
                             }`
                           }
                           onClick={toggleMenu}
@@ -244,16 +270,30 @@ const Header = () => {
               </h2>
               <ul className="space-y-2">
                 {[
-                  { icon: <Mail className="w-5 h-5" />, text: "Mail", path: "#" },
-                  { icon: <MessageSquare className="w-5 h-5" />, text: "Contact", path: "/contact" },
-                  { icon: <Calendar className="w-5 h-5" />, text: "Ecommerce", path: "#" },
+                  {
+                    icon: <Mail className="w-5 h-5" />,
+                    text: "Mail",
+                    path: "#",
+                  },
+                  {
+                    icon: <MessageSquare className="w-5 h-5" />,
+                    text: "Contact",
+                    path: "/contact",
+                  },
+                  {
+                    icon: <Calendar className="w-5 h-5" />,
+                    text: "Ecommerce",
+                    path: "#",
+                  },
                 ].map((item) => (
                   <NavLink
                     key={item.text}
                     to={item.path}
                     className={({ isActive }) =>
                       `flex items-center gap-3 p-2 rounded-lg transition-colors ${
-                        isActive ? "bg-green-50 text-green-600" : "hover:bg-gray-100 text-gray-700"
+                        isActive
+                          ? "bg-green-50 text-green-600"
+                          : "hover:bg-gray-100 text-gray-700"
                       }`
                     }
                     onClick={toggleMenu}

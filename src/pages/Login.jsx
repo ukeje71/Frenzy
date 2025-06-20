@@ -1,40 +1,40 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { FacebookIcon, Lock, Mail } from "lucide-react";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Facebook, Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { auth } from "../components/Firebase";
 import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login Successful! Redirecting...", {
         position: "top-center",
         autoClose: 2000,
       });
-      // Redirect after 2 seconds
       setTimeout(() => navigate("/account"), 2000);
     } catch (error) {
-      console.error("Login error:", error); // Keep for debugging
-
-      let friendlyMessage = "Login failed"; // Default fallback
+      console.error("Login error:", error);
+      let friendlyMessage = "Login failed";
       const errorCode = error.code;
 
-      // Custom messages for common Firebase errors
       const errorMap = {
-        "auth/invalid-email": " Invalid email format",
+        "auth/invalid-email": "Invalid email format",
         "auth/user-disabled": "Account disabled. Contact support",
-        "auth/user-not-found": " No account found with this email",
-        "auth/wrong-password":
-          "Incorrect password. Try again or reset password",
-        "auth/too-many-requests": " Too many attempts. Try again later",
-        "auth/network-request-failed": " Check your Network",
+        "auth/user-not-found": "No account found with this email",
+        "auth/wrong-password": "Incorrect password. Try again or reset password",
+        "auth/too-many-requests": "Too many attempts. Try again later",
+        "auth/network-request-failed": "Check your Network",
       };
 
       friendlyMessage = errorMap[errorCode] || "Login failed. Please try again";
@@ -50,13 +50,12 @@ const Login = () => {
         icon: "❌",
       });
 
-      // Special case: Suggest password reset
       if (errorCode === "auth/wrong-password") {
         setTimeout(() => {
           toast.info("Forgot password? Click here to reset", {
             position: "top-center",
             autoClose: 5000,
-            onClick: () => (window.location.href = "/reset-password"),
+            onClick: () => navigate("/reset-password"),
             style: {
               cursor: "pointer",
               background: "#1890ff",
@@ -64,79 +63,154 @@ const Login = () => {
           });
         }, 1500);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const signInWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      toast.success("Google login successful! Redirecting...", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      setTimeout(() => navigate("/account"), 2000);
+    } catch (error) {
+      console.error("Google sign in error:", error);
+      toast.error("Google login failed. Please try again", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden pt-30">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
       {/* Sidebar */}
       <section className="w-fit">
         <Sidebar />
       </section>
-      <div className="flex justify-center items-center w-full  bg-white p-4">
-        <div className="bg-white form w-full max-w-md p-6 rounded-xl shadow-lg overflow-auto max-h-screen">
-          <h1 className="text-3xl font-bold text-center mb-6 text-[#008f96]">
-            Sign In
+      
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
+          <h1 className="text-3xl font-bold text-center mb-8 text-[#008f96]">
+            Welcome Back
           </h1>
-          <div className="flex flex-col sm:flex-row justify-center items-center mt-8 gap-4">
+          
+          {/* Social Login Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
             <button
-              className="flex justify-center items-center gap-3 shadow-md p-3 rounded-xl w-full sm:w-60 bg-white"
-              // onClick={signInWithFirebase}
+              onClick={signInWithGoogle}
+              disabled={isLoading}
+              className="flex items-center justify-center gap-3 shadow-md p-3 rounded-xl w-full sm:w-60 bg-white hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50"
             >
-              <span className="font-extrabold text-3xl text-black">G</span>
-              <span className="text-black font-medium"> Google</span>
+              <p className="w-5 h-5 text-[#4285F4]">G</p>
+              <span className="text-gray-700 font-medium">Continue with Google</span>
             </button>
 
-            <button className="flex justify-center items-center gap-3 shadow-md p-3 rounded-xl w-full sm:w-60 bg-white">
-              <FacebookIcon size={30} className="text-black " />
-              <span className="text-black font-medium"> Facebook</span>
+            <button
+              disabled={isLoading}
+              className="flex items-center justify-center gap-3 shadow-md p-3 rounded-xl w-full sm:w-60 bg-white hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50"
+            >
+              <Facebook className="w-5 h-5 text-[#1877F2]" />
+              <span className="text-gray-700 font-medium">Continue with Facebook</span>
             </button>
           </div>
-          <div className="flex flex-row gap-2 text-sm md :gap-10 items-center mt-5 mb-5 justify-center">
-            <div className="w-20 h-0.5 bg-gray-400 "></div>
-            <p className="text-gray-600 text-center ">Register via email</p>
-            <div className="w-20 h-0.5 bg-gray-400 "></div>
+          
+          {/* Divider */}
+          <div className="flex items-center my-6">
+            <div className="flex-1 h-px bg-gray-300"></div>
+            <span className="px-4 text-gray-500 text-sm">OR</span>
+            <div className="flex-1 h-px bg-gray-300"></div>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6 text-white text-base"
-          >
-            <div className="flex flex-row  border-0 rounded-lg p-2 bg-[#ccc] gap-4 text-black">
-              <Mail />
-              <input
-                required
-                type="text"
-                id="lastname"
-                placeholder="User@gmail.com"
-                onChange={(e) => setEmail(e.target.value)}
-                className=" secured outline-none w-full"
-              />
+          
+          {/* Email/Password Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1">
+              <label htmlFor="email" className="text-gray-700 text-sm font-medium">
+                Email Address
+              </label>
+              <div className="flex items-center border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-[#008f96] focus-within:border-transparent transition-all">
+                <Mail className="text-gray-500 w-5 h-5" />
+                <input
+                  required
+                  type="email"
+                  id="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="ml-3 outline-none w-full bg-transparent text-gray-800 placeholder-gray-400"
+                />
+              </div>
             </div>
-
-            <div className="flex flex-row  border-0 rounded-lg p-2 bg-[#ccc] gap-4 text-black">
-              <Lock />
-              <input
-                required
-                type="text"
-                id="lastname"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                className=" secured outline-none w-full"
-              />
+            
+            <div className="space-y-1">
+              <label htmlFor="password" className="text-gray-700 text-sm font-medium">
+                Password
+              </label>
+              <div className="flex items-center border border-gray-300 rounded-lg p-3 focus-within:ring-2 focus-within:ring-[#008f96] focus-within:border-transparent transition-all">
+                <Lock className="text-gray-500 w-5 h-5" />
+                <input
+                  required
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="ml-3 outline-none w-full bg-transparent text-gray-800 placeholder-gray-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="ml-3 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+              <div className="flex justify-end">
+                <Link
+                  to="/reset-password"
+                  className="text-sm text-[#008f96] hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
-            <div className="flex justify-center items-center">
-              <button
-                type="submit"
-                className="w-50 p-3 rounded-3xl bg-[#008f96]  text-white font-semibold self-center shadow-md"
-              >
-                Sign Up
-              </button>
-            </div>
+            
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full p-3 rounded-lg bg-[#008f96] hover:bg-[#007a80] text-white font-semibold shadow-md transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin w-5 h-5" />
+                  Signing In...
+                </>
+              ) : (
+                <>
+                  <Lock className="w-5 h-5" />
+                  Sign In
+                </>
+              )}
+            </button>
           </form>
-          <Link to="/create">
-            <p className="pt-6 text-center text-black underline text-sm">
-              Don’t have an account? Sign up
-            </p>
-          </Link>
+          
+          <div className="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?
+            <Link
+              to="/create"
+              className="text-[#008f96] font-medium hover:underline"
+            >
+              Sign up
+            </Link>
+          </div>
         </div>
       </div>
     </div>
