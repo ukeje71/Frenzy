@@ -149,7 +149,7 @@ const Billing = () => {
                     name="addressLine1"
                     id="addressLine1"
                     placeholder="House number and street name"
-                    className={`w-full px-4 py-3 border ${
+                    className={`w-full outline-none px-4 py-3 border ${
                       formErrors.addressLine1
                         ? "border-red-300"
                         : "border-gray-300"
@@ -176,7 +176,7 @@ const Billing = () => {
                     name="streetName"
                     id="streetName"
                     placeholder="Azikiwe Street"
-                    className={`w-full px-4 py-3 border ${
+                    className={`w-full outline-none px-4 py-3 border ${
                       formErrors.streetName
                         ? "border-red-300"
                         : "border-gray-300"
@@ -204,7 +204,7 @@ const Billing = () => {
                       name="phoneNumber"
                       id="phoneNumber"
                       placeholder="+234 123 456 7890"
-                      className={`w-full px-4 py-3 border ${
+                      className={`w-full outline-none px-4 py-3 border ${
                         formErrors.phoneNumber
                           ? "border-red-300"
                           : "border-gray-300"
@@ -230,7 +230,7 @@ const Billing = () => {
                       <select
                         name="deliveryOption"
                         id="deliveryOption"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none transition-all"
+                        className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none transition-all"
                         value={formData.deliveryOption}
                         onChange={handleInputChange}
                       >

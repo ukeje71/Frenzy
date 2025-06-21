@@ -4,12 +4,11 @@ import { Heart, ShoppingCart, Trash2 } from "lucide-react";
 import useWishlistStore from "../components/store/WishlistStore";
 import { toast } from "react-toastify";
 
-
 const WishList = () => {
-  const { 
-    wishlist, 
-    moveAllToCart, 
-    moveToCart, 
+  const {
+    wishlist,
+    moveAllToCart,
+    moveToCart,
     removeFromWishlist,
     // isInWishlist
   } = useWishlistStore();
@@ -56,14 +55,14 @@ const WishList = () => {
           {wishlist.map((product) => (
             <div
               key={product.id}
-              className="relative border rounded-lg p-4 hover:shadow-md transition-shadow group"
+              className="relative shadow-xs  shadow-gray-400 border-gray-200 border-1 rounded-lg  p-4 hover:shadow-md transition-shadow group"
             >
               {/* Product Image */}
               <div className="bg-gray-100 rounded-lg overflow-hidden mb-3 h-48 flex items-center justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-contain"
+                  className="w-full h-70  rounded-t-xl"
                 />
               </div>
 
@@ -75,14 +74,14 @@ const WishList = () => {
 
               {/* Action Buttons */}
               <div className="absolute top-4 right-4 flex flex-col gap-2">
-                <button 
+                <button
                   onClick={() => handleRemove(product)}
                   className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
                   aria-label="Remove from wishlist"
                 >
                   <Trash2 className="text-gray-500" size={18} />
                 </button>
-                
+
                 <button
                   onClick={() => handleMoveToCart(product)}
                   className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
@@ -95,7 +94,7 @@ const WishList = () => {
               {/* Add to Cart Button (Bottom) */}
               <button
                 onClick={() => handleMoveToCart(product)}
-                className="w-full mt-4 py-2 bg-gray-900 text-white hover:bg-gray-800 rounded-lg transition-colors"
+                className="w-full mt-4 py-2 bg-[#1dc2b1] text-white hover:bg-[#1aa995]  rounded-lg transition-colors"
               >
                 Add to Cart
               </button>

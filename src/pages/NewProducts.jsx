@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { Camera, CheckCircle2, PlusCircle, Tag, Box, Ruler, User, DollarSign } from "lucide-react";
+import { Camera, CheckCircle2, PlusCircle, Tag, Box, DollarSign } from "lucide-react";
 import { NavLink } from "react-router";
 
 const NewProducts = () => {
@@ -78,7 +78,7 @@ const NewProducts = () => {
                 <input
                   type="text"
                   placeholder="Enter product name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                 />
               </div>
 
@@ -88,7 +88,7 @@ const NewProducts = () => {
                 <textarea
                   rows="4"
                   placeholder="Write a compelling product description"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all resize-none"
+                  className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all resize-none"
                 ></textarea>
               </div>
 
@@ -163,7 +163,7 @@ const NewProducts = () => {
                   <input
                     type="text"
                     placeholder="e.g. PROD-001"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                   />
                 </div>
                 <div>
@@ -171,7 +171,7 @@ const NewProducts = () => {
                   <input
                     type="text"
                     placeholder="e.g. M, L, XL"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                   />
                 </div>
               </div>
@@ -224,7 +224,7 @@ const NewProducts = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Delivery Method</label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all">
+                  <select className=" outline-none w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all">
                     <option>Free Delivery</option>
                     <option>Home Delivery</option>
                     <option>Pick Up</option>
@@ -245,7 +245,7 @@ const NewProducts = () => {
                   <input
                     type="text"
                     placeholder="35.70"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                   />
                 </div>
                 <div>
@@ -253,7 +253,7 @@ const NewProducts = () => {
                   <input
                     type="text"
                     placeholder="29.99"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                    className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                   />
                 </div>
               </div>
