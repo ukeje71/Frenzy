@@ -1,253 +1,311 @@
-import { CheckCircle2, ChevronLeft, Truck, Home, Package } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router";
-import useCartStore from "../components/store/CartStore";
-import { db } from "../components/Firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { useState } from 'react';
+import { usePaystackPayment } from 'react-paystack';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../components/Firebase';
+import { toast } from 'react-toastify';
+import { NavLink, useNavigate } from 'react-router';
+import { CheckCircle2, ChevronLeft, Truck, Package, Loader2 } from 'lucide-react';
+import Sidebar from '../components/Sidebar';
+import useCartStore from '../components/store/CartStore';
 
 const Billing = () => {
+  const publicKey = "pk_test_15d1a66d354ca8680092d0ff1c1ccebef82044be"; // Replace with your actual key
   const navigate = useNavigate();
-  const { totalPrice } = useCartStore();
-  const [formData, setFormData] = useState({
-    addressLine1: "",
-    streetName: "",
-    phoneNumber: "",
-    deliveryOption: "Free Delivery",
-  });
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { totalPrice, clearCart } = useCartStore();
 
-  // Calculate cart totals
+  // Form state with all required fields
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    addressLine1: '',
+    streetName: '',
+    city: '',
+    state: '',
+    deliveryOption: 'Free Delivery'
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Calculate order totals
   const subtotal = totalPrice();
   const discount = 10;
-  const shipping = 0;
+  const shipping = formData.deliveryOption === 'Home Delivery' ? 500 : 0;
   const total = subtotal - discount + shipping;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.addressLine1.trim())
-      errors.addressLine1 = "First line of address is required";
-    if (!formData.streetName.trim())
-      errors.streetName = "Street name is required";
-    if (!formData.phoneNumber.trim())
-      errors.phoneNumber = "Phone number is required";
+    if (!formData.fullName.trim()) errors.fullName = 'Full name required';
+    if (!formData.email.trim()) errors.email = 'Email required';
+    if (!formData.phoneNumber.trim()) errors.phoneNumber = 'Phone number required';
+    if (!formData.addressLine1.trim()) errors.addressLine1 = 'Address line required';
+    if (!formData.streetName.trim()) errors.streetName = 'Street name required';
+    if (!formData.city.trim()) errors.city = 'City required';
+    if (!formData.state.trim()) errors.state = 'State required';
     return errors;
   };
 
-  const handleSubmit = async (e) => {
+  // Paystack configuration
+  const paystackConfig = {
+    reference: `FRENZY-${Date.now()}`,
+    email: formData.email,
+    amount: total * 100, // Paystack uses amount in kobo
+    publicKey,
+    currency: 'NGN',
+    metadata: {
+      customer_name: formData.fullName,
+      phone: formData.phoneNumber,
+      delivery_address: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`
+    }
+  };
+
+  const initializePayment = usePaystackPayment(paystackConfig);
+
+  const handlePaymentSuccess = async (response) => {
+    try {
+      // Save complete order details to Firestore
+      const orderRef = await addDoc(collection(db, 'orders'), {
+        customerDetails: {
+          ...formData,
+          deliveryAddress: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`
+        },
+        paymentDetails: {
+          amount: total,
+          reference: response.reference,
+          status: 'paid',
+          method: 'Paystack',
+          paidAt: new Date()
+        },
+        orderDetails: {
+          subtotal,
+          discount,
+          shipping,
+          total,
+          items: useCartStore.getState().items // Get current cart items
+        },
+        status: 'processing',
+        createdAt: new Date()
+      });
+
+      // Clear cart after successful payment
+      clearCart();
+
+      toast.success(
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="text-green-500" />
+          Payment successful! Your order is being processed.
+        </div>
+      );
+
+      navigate(`/order-confirmation/${orderRef.id}`);
+    } catch (error) {
+      console.error('Error saving order:', error);
+      toast.error(
+        <div className="flex items-center gap-2">
+          <Package className="text-red-500" />
+          Payment succeeded but failed to save order details
+        </div>
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handlePaymentClose = () => {
+    toast.info(
+      <div className="flex items-center gap-2">
+        <Truck className="text-blue-500" />
+        Payment window closed - you can try again
+      </div>
+    );
+    setIsProcessing(false);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validateForm();
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      setIsSubmitting(true);
-      try {
-        const docRef = await addDoc(collection(db, "users"), {
-          ...formData,
-          orderTotal: total,
-          subtotal,
-          discount,
-          shipping,
-          timestamp: new Date(),
-        });
-        console.log("Document written with ID: ", docRef.id);
-        navigate("/payment");
-      } catch (error) {
-        console.error("Error adding document: ", error);
-      } finally {
-        setIsSubmitting(false);
-      }
+      setIsProcessing(true);
+      initializePayment(handlePaymentSuccess, handlePaymentClose);
     }
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-30">
-      {/* Sidebar */}
-      <section className="w-fit">
-        <Sidebar />
-      </section>
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-20">
+      <Sidebar />
 
-      {/* Main Content */}
-      <section className="w-full p-4 md:p-8">
-        {/* Breadcrumb Navigation */}
+      <main className="w-full p-4 md:p-8">
+        {/* Navigation */}
         <div className="mb-8">
-          {/* Mobile Breadcrumb */}
-          <div className="flex lg:hidden items-center text-sm text-gray-600 mb-4">
-            <NavLink to="/" className="hover:text-green-600 transition-colors">
-              Home
-            </NavLink>
-            <span className="mx-2">/</span>
-            <NavLink to="/billing" className="font-medium text-green-600">
-              Address & Billing
-            </NavLink>
-          </div>
-
-          {/* Desktop Breadcrumb */}
-          <div className="hidden lg:flex items-center text-sm text-gray-600 space-x-4">
-            <NavLink
-              to="/cart"
-              className="flex items-center hover:text-green-600 transition-colors"
-            >
-              Cart
-            </NavLink>
-            <div className="flex items-center">
-              <div className="w-6 h-px bg-gray-300"></div>
-              <CheckCircle2
-                className="mx-1"
-                size={16}
-                fill="#10B981"
-                color="white"
-              />
-              <div className="w-6 h-px bg-gray-300"></div>
-            </div>
-            <NavLink to="/payment" className="flex items-center text-gray-400">
-              Payment
-            </NavLink>
-            <div className="flex items-center">
-              <div className="w-6 h-px bg-gray-300"></div>
-              <CheckCircle2
-                className="mx-1"
-                size={16}
-                fill="#10B981"
-                color="#fff"
-              />
-              <div className="w-6 h-px bg-gray-300"></div>
-            </div>
-            <NavLink to="/billing" className="flex items-center text-gray-400">
-              Billing & Address
-            </NavLink>
-          </div>
+          <NavLink 
+            to="/cart" 
+            className="flex items-center text-gray-600 hover:text-green-600"
+          >
+            <ChevronLeft size={18} className="mr-1" />
+            Back to Cart
+          </NavLink>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Billing Form */}
+          {/* Shipping Form */}
           <div className="lg:w-2/3">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <Truck size={24} className="text-green-600" />
                 Shipping Information
               </h2>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label
-                    htmlFor="addressLine1"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    First line of address
-                  </label>
-                  <input
-                    type="text"
-                    name="addressLine1"
-                    id="addressLine1"
-                    placeholder="House number and street name"
-                    className={`w-full outline-none px-4 py-3 border ${
-                      formErrors.addressLine1
-                        ? "border-red-300"
-                        : "border-gray-300"
-                    } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
-                    value={formData.addressLine1}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.addressLine1 && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {formErrors.addressLine1}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="LandMark"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    LandMark
-                  </label>
-                  <input
-                    type="text"
-                    name="streetName"
-                    id="streetName"
-                    placeholder="Okigwe Road"
-                    className={`w-full outline-none px-4 py-3 border ${
-                      formErrors.streetName
-                        ? "border-red-300"
-                        : "border-gray-300"
-                    } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
-                    value={formData.streetName}
-                    onChange={handleInputChange}
-                  />
-                  {formErrors.streetName && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {formErrors.streetName}
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Personal Details */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label
-                      htmlFor="phoneNumber"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Phone Number
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Full Name*
                     </label>
                     <input
-                      type="text"
-                      name="phoneNumber"
-                      id="phoneNumber"
-                      placeholder="+234 123 456 7890"
-                      className={`w-full outline-none px-4 py-3 border ${
-                        formErrors.phoneNumber
-                          ? "border-red-300"
-                          : "border-gray-300"
-                      } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all`}
-                      value={formData.phoneNumber}
+                      name="fullName"
+                      value={formData.fullName}
                       onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg ${
+                        formErrors.fullName ? 'border-red-300' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-green-500`}
                     />
-                    {formErrors.phoneNumber && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {formErrors.phoneNumber}
-                      </p>
+                    {formErrors.fullName && (
+                      <p className="text-red-500 text-sm mt-1">{formErrors.fullName}</p>
                     )}
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="deliveryOption"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email*
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg ${
+                        formErrors.email ? 'border-red-300' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-green-500`}
+                    />
+                    {formErrors.email && (
+                      <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Address Details */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number*
+                    </label>
+                    <input
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg ${
+                        formErrors.phoneNumber ? 'border-red-300' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-green-500`}
+                    />
+                    {formErrors.phoneNumber && (
+                      <p className="text-red-500 text-sm mt-1">{formErrors.phoneNumber}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Delivery Method
                     </label>
-                    <div className="relative">
-                      <select
-                        name="deliveryOption"
-                        id="deliveryOption"
-                        className="w-full outline-none px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none transition-all"
-                        value={formData.deliveryOption}
-                        onChange={handleInputChange}
-                      >
-                        <option value="Free Delivery">Free Delivery</option>
-                        <option value="Home Delivery">Home Delivery</option>
-                        <option value="Pick up">Pick up</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg
-                          className="fill-current h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                      </div>
-                    </div>
+                    <select
+                      name="deliveryOption"
+                      value={formData.deliveryOption}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    >
+                      <option value="Free Delivery">Free Delivery (3-5 days)</option>
+                      <option value="Home Delivery">Express Delivery (+₦500)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address Line 1*
+                  </label>
+                  <input
+                    name="addressLine1"
+                    value={formData.addressLine1}
+                    onChange={handleInputChange}
+                    placeholder="House number, building name"
+                    className={`w-full px-4 py-3 border rounded-lg ${
+                      formErrors.addressLine1 ? 'border-red-300' : 'border-gray-300'
+                    } focus:ring-2 focus:ring-green-500`}
+                  />
+                  {formErrors.addressLine1 && (
+                    <p className="text-red-500 text-sm mt-1">{formErrors.addressLine1}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Street Name*
+                  </label>
+                  <input
+                    name="streetName"
+                    value={formData.streetName}
+                    onChange={handleInputChange}
+                    placeholder="Street name, area"
+                    className={`w-full px-4 py-3 border rounded-lg ${
+                      formErrors.streetName ? 'border-red-300' : 'border-gray-300'
+                    } focus:ring-2 focus:ring-green-500`}
+                  />
+                  {formErrors.streetName && (
+                    <p className="text-red-500 text-sm mt-1">{formErrors.streetName}</p>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      City*
+                    </label>
+                    <input
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg ${
+                        formErrors.city ? 'border-red-300' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-green-500`}
+                    />
+                    {formErrors.city && (
+                      <p className="text-red-500 text-sm mt-1">{formErrors.city}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      State*
+                    </label>
+                    <input
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg ${
+                        formErrors.state ? 'border-red-300' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-green-500`}
+                    />
+                    {formErrors.state && (
+                      <p className="text-red-500 text-sm mt-1">{formErrors.state}</p>
+                    )}
                   </div>
                 </div>
               </form>
@@ -256,97 +314,61 @@ const Billing = () => {
 
           {/* Order Summary */}
           <div className="lg:w-1/3">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Package size={20} className="text-green-600" />
                 Order Summary
               </h3>
 
-              <div className="space-y-4">
+              <div className="space-y-3 mb-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="font-medium">${shipping.toFixed(2)}</span>
+                  <span>₦{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Discount</span>
-                  <span className="font-medium text-green-600">
-                    -${discount.toFixed(2)}
-                  </span>
+                  <span className="text-green-600">-₦{discount.toLocaleString()}</span>
                 </div>
-              </div>
-
-              <div className="mt-6">
-                <div className="flex">
-                  <input
-                    type="text"
-                    placeholder="Gift Card / Discount code"
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
-                  />
-                  <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-r-lg transition-colors">
-                    Apply
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-gray-200">
                 <div className="flex justify-between">
-                  <span className="font-bold text-gray-800">Total</span>
-                  <span className="font-bold text-green-600">
-                    ${total.toFixed(2)}
-                  </span>
+                  <span className="text-gray-600">Shipping</span>
+                  <span>₦{shipping.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div className="py-4 border-t border-gray-200 mb-4">
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span className="text-green-600">₦{total.toLocaleString()}</span>
                 </div>
               </div>
 
               <button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
-                className={`w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-all shadow-md hover:shadow-lg ${
-                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                disabled={isProcessing}
+                className={`w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 ${
+                  isProcessing ? 'opacity-75 cursor-not-allowed' : ''
                 }`}
               >
-                {isSubmitting ? (
-                  <span className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Processing...
-                  </span>
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="animate-spin h-5 w-5" />
+                    Processing Payment...
+                  </>
                 ) : (
-                  "Proceed to Payment"
+                  <>
+                    <CheckCircle2 size={18} />
+                    Proceed to Payment
+                  </>
                 )}
               </button>
 
-              <NavLink
-                to="/cart"
-                className="inline-flex items-center text-gray-600 hover:text-green-600 mt-6 transition-colors"
-              >
-                <ChevronLeft size={18} className="mr-1" />
-                <span>Back to Cart</span>
-              </NavLink>
+              <p className="text-xs text-gray-500 mt-3 text-center">
+                <span className="font-medium">Note:</span> You'll be redirected to Paystack for secure payment
+              </p>
             </div>
           </div>
         </div>
-      </section>
+      </main>
     </div>
   );
 };
