@@ -71,7 +71,20 @@ const Cart = () => {
               />
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
-            <NavLink to="/billing" className="flex items-center text-gray-400">
+            <NavLink to="/Payment" className="flex items-center text-gray-400">
+              Payment
+            </NavLink>
+            <div className="flex items-center">
+              <div className="w-6 h-px bg-gray-300"></div>
+              <CheckCircle2
+                className="mx-1"
+                size={16}
+                fill="#e5e7eb"
+                color="#9ca3af"
+              />
+              <div className="w-6 h-px bg-gray-300"></div>
+            </div>
+             <NavLink to="/billing" className="flex items-center text-gray-400">
               Billing
             </NavLink>
           </div>

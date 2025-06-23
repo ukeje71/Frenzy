@@ -19,10 +19,9 @@ const Payment = () => {
 
       {/* Main Content */}
       <section className="w-full p-4 md:p-8 ">
-        {/* Breadcrumb Navigation */}
         <div className="mb-8">
-          {/* Mobile Breadcrumb */}
-          <div className="flex lg:hidden items-center  text-gray-600 mb-4">
+          {/* Mobile  */}
+          <div className="flex lg:hidden items-center text-sm  text-gray-600 mb-4">
             <NavLink to="/" className="hover:text-green-600 transition-colors">
               Home
             </NavLink>
@@ -32,8 +31,8 @@ const Payment = () => {
             </NavLink>
           </div>
 
-          {/* Desktop Breadcrumb */}
-          <div className="hidden lg:flex items-center  text-gray-600 space-x-4">
+          {/* Desktop  */}
+          <div className="hidden lg:flex items-center text-sm text-gray-600 space-x-4">
             <NavLink
               to="/cart"
               className="flex items-center hover:text-green-600 transition-colors"
@@ -51,10 +50,10 @@ const Payment = () => {
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
             <NavLink
-              to="/billing"
+              to="/payment"
               className="flex items-center hover:text-green-600 transition-colors"
             >
-              Billing & Address
+              Payment
             </NavLink>
             <div className="flex items-center">
               <div className="w-6 h-px bg-gray-300"></div>
@@ -66,7 +65,12 @@ const Payment = () => {
               />
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
-            <span className="font-medium text-green-600">Payment</span>
+           <NavLink
+              to="/billing"
+              className="flex items-center hover:text-green-600 transition-colors"
+            >
+              Billing & Address
+            </NavLink>
           </div>
         </div>
 

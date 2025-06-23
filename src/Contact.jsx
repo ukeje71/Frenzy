@@ -27,7 +27,7 @@ const Contact = () => {
         {/* Contact Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-            Let's Talk About Your Project
+            Let's Talk About Your Problem
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             We're here to help and answer any questions you might have. Drop us
@@ -50,7 +50,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-700">Email Us</h3>
-                    <p className="text-gray-500">support@frenzy.com</p>
+                    <p className="text-gray-500">ukejeisaac71@.com</p>
                     <p className="text-gray-500">info@frenzy.com</p>
                   </div>
                 </div>
@@ -61,7 +61,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-700">Call Us</h3>
-                    <p className="text-gray-500">+1 (555) 123-4567</p>
+                    <p className="text-gray-500">+2347076354937</p>
                     <p className="text-gray-500">Mon-Fri: 9am-5pm</p>
                   </div>
                 </div>
@@ -72,8 +72,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-700">Visit Us</h3>
-                    <p className="text-gray-500">123 Business Ave</p>
-                    <p className="text-gray-500">San Francisco, CA 94107</p>
+                    <p className="text-gray-500">10 Calaber street</p>
+                    <p className="text-gray-500">Innovation Growth Hub</p>
                   </div>
                 </div>
               </div>

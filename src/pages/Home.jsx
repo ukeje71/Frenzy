@@ -121,7 +121,7 @@ const Home = () => {
             >
               {productPages.map((pageProducts, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4 gap-6">
                     {pageProducts.length > 0 ? (
                       pageProducts.map((product) => (
                         <Cards key={product.id} product={product} />

@@ -109,21 +109,21 @@ const Billing = () => {
               />
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
-            <span className="font-medium text-green-600">
-              Billing & Address
-            </span>
+            <NavLink to="/payment" className="flex items-center text-gray-400">
+              Payment
+            </NavLink>
             <div className="flex items-center">
               <div className="w-6 h-px bg-gray-300"></div>
               <CheckCircle2
                 className="mx-1"
                 size={16}
-                fill="#e5e7eb"
-                color="#9ca3af"
+                fill="#10B981"
+                color="#fff"
               />
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
-            <NavLink to="/payment" className="flex items-center text-gray-400">
-              Payment
+            <NavLink to="/billing" className="flex items-center text-gray-400">
+              Billing & Address
             </NavLink>
           </div>
         </div>
@@ -166,16 +166,16 @@ const Billing = () => {
 
                 <div>
                   <label
-                    htmlFor="streetName"
+                    htmlFor="LandMark"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Street name
+                    LandMark
                   </label>
                   <input
                     type="text"
                     name="streetName"
                     id="streetName"
-                    placeholder="Azikiwe Street"
+                    placeholder="Okigwe Road"
                     className={`w-full outline-none px-4 py-3 border ${
                       formErrors.streetName
                         ? "border-red-300"
