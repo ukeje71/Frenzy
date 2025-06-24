@@ -1,28 +1,34 @@
-import { useState } from 'react';
-import { usePaystackPayment } from 'react-paystack';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../components/Firebase';
-import { toast } from 'react-toastify';
-import { NavLink, useNavigate } from 'react-router';
-import { CheckCircle2, ChevronLeft, Truck, Package, Loader2 } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
-import useCartStore from '../components/store/CartStore';
+import { useState } from "react";
+import { usePaystackPayment } from "react-paystack";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../components/Firebase";
+import { toast } from "react-toastify";
+import { NavLink, useNavigate } from "react-router";
+import {
+  CheckCircle2,
+  ChevronLeft,
+  Truck,
+  Package,
+  Loader2,
+} from "lucide-react";
+import Sidebar from "../components/Sidebar";
+import useCartStore from "../components/store/CartStore";
 
 const Billing = () => {
-  const publicKey = "pk_test_15d1a66d354ca8680092d0ff1c1ccebef82044be"; // Replace with your actual key
+  const publicKey = "pk_test_15d1a66d354ca8680092d0ff1c1ccebef82044be";
   const navigate = useNavigate();
-  const { totalPrice, clearCart } = useCartStore();
+  const { totalPrice, clearCart, items } = useCartStore();
 
-  // Form state with all required fields
+  // Form state
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-    addressLine1: '',
-    streetName: '',
-    city: '',
-    state: '',
-    deliveryOption: 'Free Delivery'
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    addressLine1: "",
+    streetName: "",
+    city: "",
+    state: "",
+    deliveryOption: "Free Delivery",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -31,85 +37,108 @@ const Billing = () => {
   // Calculate order totals
   const subtotal = totalPrice();
   const discount = 10;
-  const shipping = formData.deliveryOption === 'Home Delivery' ? 500 : 0;
+  const shipping = formData.deliveryOption === "Home Delivery" ? 500 : 0;
   const total = subtotal - discount + shipping;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.fullName.trim()) errors.fullName = 'Full name required';
-    if (!formData.email.trim()) errors.email = 'Email required';
-    if (!formData.phoneNumber.trim()) errors.phoneNumber = 'Phone number required';
-    if (!formData.addressLine1.trim()) errors.addressLine1 = 'Address line required';
-    if (!formData.streetName.trim()) errors.streetName = 'Street name required';
-    if (!formData.city.trim()) errors.city = 'City required';
-    if (!formData.state.trim()) errors.state = 'State required';
+    if (!formData.fullName.trim()) errors.fullName = "Full name required";
+    if (!formData.email.trim()) errors.email = "Email required";
+    if (!formData.phoneNumber.trim())
+      errors.phoneNumber = "Phone number required";
+    if (!formData.addressLine1.trim())
+      errors.addressLine1 = "Address line required";
+    if (!formData.streetName.trim()) errors.streetName = "Street name required";
+    if (!formData.city.trim()) errors.city = "City required";
+    if (!formData.state.trim()) errors.state = "State required";
     return errors;
   };
 
-  // Paystack configuration
+  // Paystack configuration with verification
   const paystackConfig = {
     reference: `FRENZY-${Date.now()}`,
     email: formData.email,
-    amount: total * 100, // Paystack uses amount in kobo
+    amount: total * 100,
     publicKey,
-    currency: 'NGN',
+    currency: "NGN",
     metadata: {
       customer_name: formData.fullName,
       phone: formData.phoneNumber,
-      delivery_address: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`
-    }
+      delivery_address: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`,
+    },
   };
 
   const initializePayment = usePaystackPayment(paystackConfig);
 
+  // Enhanced payment success handler with Firestore integration
   const handlePaymentSuccess = async (response) => {
     try {
-      // Save complete order details to Firestore
-      const orderRef = await addDoc(collection(db, 'orders'), {
+      // 1. First verify the payment with Paystack
+      const verificationResponse = await verifyPayment(response.reference);
+
+      if (
+        !verificationResponse.status ||
+        verificationResponse.status !== "success"
+      ) {
+        throw new Error("Payment verification failed");
+      }
+
+      // 2. Prepare order data for Firestore
+      const orderData = {
         customerDetails: {
           ...formData,
-          deliveryAddress: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`
+          deliveryAddress: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`,
         },
         paymentDetails: {
           amount: total,
           reference: response.reference,
-          status: 'paid',
-          method: 'Paystack',
-          paidAt: new Date()
+          status: "verified",
+          method: "Paystack",
+          verifiedAt: serverTimestamp(),
         },
         orderDetails: {
           subtotal,
           discount,
           shipping,
           total,
-          items: useCartStore.getState().items // Get current cart items
+          items: items.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
         },
-        status: 'processing',
-        createdAt: new Date()
-      });
+        status: "paid",
+        createdAt: serverTimestamp(),
+      };
 
-      // Clear cart after successful payment
+      // 3. Save to Firestore "Order" collection
+      const orderRef = await addDoc(collection(db, "Order"), orderData);
+
+      console.log("Order saved to Firestore with ID:", orderRef.id);
+      setIsProcessing(false);
+
+      // 4. Clear cart and redirect
       clearCart();
+      navigate(`/order-confirmation/${orderRef.id}`);
 
       toast.success(
         <div className="flex items-center gap-2">
           <CheckCircle2 className="text-green-500" />
-          Payment successful! Your order is being processed.
+          Order confirmed! Delivery on the way.
         </div>
       );
-
-      navigate(`/order-confirmation/${orderRef.id}`);
     } catch (error) {
-      console.error('Error saving order:', error);
+      console.error("Order processing error:", error);
       toast.error(
         <div className="flex items-center gap-2">
           <Package className="text-red-500" />
-          Payment succeeded but failed to save order details
+          {error.message || "Failed to process order"}
         </div>
       );
     } finally {
@@ -117,11 +146,29 @@ const Billing = () => {
     }
   };
 
+  // Payment verification function
+  const verifyPayment = async (reference) => {
+    try {
+      const response = await fetch(
+        `https://api.paystack.co/transaction/verify/${reference}`,
+        {
+          headers: {
+            Authorization: `Bearer ${publicKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return await response.json();
+    } catch (error) {
+      error.message, "Payment verification failed";
+    }
+  };
+
   const handlePaymentClose = () => {
     toast.info(
       <div className="flex items-center gap-2">
         <Truck className="text-blue-500" />
-        Payment window closed - you can try again
+        You can complete payment later
       </div>
     );
     setIsProcessing(false);
@@ -142,16 +189,70 @@ const Billing = () => {
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-20">
       <Sidebar />
 
-      <main className="w-full p-4 md:p-8">
+      <main className="w-full  p-4 md:p-8">
         {/* Navigation */}
-        <div className="mb-8">
-          <NavLink 
-            to="/cart" 
+        {/* <div className="mb-8">
+          <NavLink
+            to="/cart"
             className="flex items-center text-gray-600 hover:text-green-600"
           >
             <ChevronLeft size={18} className="mr-1" />
             Back to Cart
           </NavLink>
+        </div> */}
+        <div className="mb-8">
+          {/* Mobile  */}
+          <div className="flex lg:hidden items-center text-sm  text-gray-600 mb-4">
+            <NavLink to="/" className="hover:text-green-600 transition-colors">
+              Home
+            </NavLink>
+            <span className="mx-2">/</span>
+            <NavLink to="/payment" className="font-medium text-green-600">
+              Payment
+            </NavLink>
+          </div>
+
+          {/* Desktop  */}
+          <div className="hidden lg:flex items-center text-sm text-gray-600 space-x-4">
+            <NavLink
+              to="/cart"
+              className="flex items-center hover:text-green-600 transition-colors"
+            >
+              Cart
+            </NavLink>
+            <div className="flex items-center">
+              <div className="w-6 h-px bg-gray-300"></div>
+              <CheckCircle2
+                className="mx-1"
+                size={16}
+                fill="#10B981"
+                color="white"
+              />
+              <div className="w-6 h-px bg-gray-300"></div>
+            </div>
+            <NavLink
+              to="/payment"
+              className="flex items-center hover:text-green-600 transition-colors"
+            >
+              Payment
+            </NavLink>
+            <div className="flex items-center">
+              <div className="w-6 h-px bg-gray-300"></div>
+              <CheckCircle2
+                className="mx-1"
+                size={16}
+                fill="#10B981"
+                color="white"
+              />
+              <div className="w-6 h-px bg-gray-300"></div>
+            </div>
+            <NavLink
+              to="/billing"
+              className="flex items-center hover:text-green-600 transition-colors"
+            >
+              Billing & Address
+            </NavLink>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -175,11 +276,15 @@ const Billing = () => {
                       value={formData.fullName}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg ${
-                        formErrors.fullName ? 'border-red-300' : 'border-gray-300'
+                        formErrors.fullName
+                          ? "border-red-300"
+                          : "border-gray-300"
                       } focus:ring-2 focus:ring-green-500`}
                     />
                     {formErrors.fullName && (
-                      <p className="text-red-500 text-sm mt-1">{formErrors.fullName}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.fullName}
+                      </p>
                     )}
                   </div>
 
@@ -193,11 +298,13 @@ const Billing = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg ${
-                        formErrors.email ? 'border-red-300' : 'border-gray-300'
+                        formErrors.email ? "border-red-300" : "border-gray-300"
                       } focus:ring-2 focus:ring-green-500`}
                     />
                     {formErrors.email && (
-                      <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.email}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -213,11 +320,15 @@ const Billing = () => {
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg ${
-                        formErrors.phoneNumber ? 'border-red-300' : 'border-gray-300'
+                        formErrors.phoneNumber
+                          ? "border-red-300"
+                          : "border-gray-300"
                       } focus:ring-2 focus:ring-green-500`}
                     />
                     {formErrors.phoneNumber && (
-                      <p className="text-red-500 text-sm mt-1">{formErrors.phoneNumber}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.phoneNumber}
+                      </p>
                     )}
                   </div>
 
@@ -231,8 +342,12 @@ const Billing = () => {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     >
-                      <option value="Free Delivery">Free Delivery (3-5 days)</option>
-                      <option value="Home Delivery">Express Delivery (+₦500)</option>
+                      <option value="Free Delivery">
+                        Free Delivery (3-5 days)
+                      </option>
+                      <option value="Home Delivery">
+                        Express Delivery (+₦500)
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -247,11 +362,15 @@ const Billing = () => {
                     onChange={handleInputChange}
                     placeholder="House number, building name"
                     className={`w-full px-4 py-3 border rounded-lg ${
-                      formErrors.addressLine1 ? 'border-red-300' : 'border-gray-300'
+                      formErrors.addressLine1
+                        ? "border-red-300"
+                        : "border-gray-300"
                     } focus:ring-2 focus:ring-green-500`}
                   />
                   {formErrors.addressLine1 && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.addressLine1}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.addressLine1}
+                    </p>
                   )}
                 </div>
 
@@ -265,11 +384,15 @@ const Billing = () => {
                     onChange={handleInputChange}
                     placeholder="Street name, area"
                     className={`w-full px-4 py-3 border rounded-lg ${
-                      formErrors.streetName ? 'border-red-300' : 'border-gray-300'
+                      formErrors.streetName
+                        ? "border-red-300"
+                        : "border-gray-300"
                     } focus:ring-2 focus:ring-green-500`}
                   />
                   {formErrors.streetName && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.streetName}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.streetName}
+                    </p>
                   )}
                 </div>
 
@@ -283,11 +406,13 @@ const Billing = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg ${
-                        formErrors.city ? 'border-red-300' : 'border-gray-300'
+                        formErrors.city ? "border-red-300" : "border-gray-300"
                       } focus:ring-2 focus:ring-green-500`}
                     />
                     {formErrors.city && (
-                      <p className="text-red-500 text-sm mt-1">{formErrors.city}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.city}
+                      </p>
                     )}
                   </div>
 
@@ -300,11 +425,13 @@ const Billing = () => {
                       value={formData.state}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border rounded-lg ${
-                        formErrors.state ? 'border-red-300' : 'border-gray-300'
+                        formErrors.state ? "border-red-300" : "border-gray-300"
                       } focus:ring-2 focus:ring-green-500`}
                     />
                     {formErrors.state && (
-                      <p className="text-red-500 text-sm mt-1">{formErrors.state}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {formErrors.state}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -327,7 +454,9 @@ const Billing = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Discount</span>
-                  <span className="text-green-600">-₦{discount.toLocaleString()}</span>
+                  <span className="text-green-600">
+                    -₦{discount.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
@@ -338,7 +467,9 @@ const Billing = () => {
               <div className="py-4 border-t border-gray-200 mb-4">
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span className="text-green-600">₦{total.toLocaleString()}</span>
+                  <span className="text-green-600">
+                    ₦{total.toLocaleString()}
+                  </span>
                 </div>
               </div>
 
@@ -346,7 +477,7 @@ const Billing = () => {
                 onClick={handleSubmit}
                 disabled={isProcessing}
                 className={`w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                  isProcessing ? 'opacity-75 cursor-not-allowed' : ''
+                  isProcessing ? "opacity-75 cursor-not-allowed" : ""
                 }`}
               >
                 {isProcessing ? (
@@ -363,7 +494,8 @@ const Billing = () => {
               </button>
 
               <p className="text-xs text-gray-500 mt-3 text-center">
-                <span className="font-medium">Note:</span> You'll be redirected to Paystack for secure payment
+                <span className="font-medium">Note:</span> You'll be redirected
+                to Paystack for secure payment
               </p>
             </div>
           </div>

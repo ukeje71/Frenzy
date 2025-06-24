@@ -1,6 +1,6 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import Sidebar from "../components/Sidebar";
-import React from "react";
+import React, { useState } from "react";
 import {
   CheckCircle2,
   ChevronLeft,
@@ -8,8 +8,36 @@ import {
   Wallet,
   DollarSign,
 } from "lucide-react";
+import useCartStore from "../components/store/CartStore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Payment = () => {
+  const { totalPrice } = useCartStore();
+  const [selectedPayment, setSelectedPayment] = useState("");
+  const navigate = useNavigate();
+
+  // Calculate order totals
+  const subtotal = totalPrice();
+  const discount = 10;
+  const total = subtotal - discount;
+
+  // HandleSubmit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!selectedPayment) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    if (selectedPayment === "digital") {
+      navigate("/billing");
+    } else if (selectedPayment === "cash") {
+      toast.warning("Cash on Delivery is not currently available. Please choose digital payment.");
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-38">
       {/* Sidebar */}
@@ -18,7 +46,9 @@ const Payment = () => {
       </section>
 
       {/* Main Content */}
-      <section className="w-full p-4 md:p-8 ">
+      <section className="w-full p-4 md:p-8">
+        {/* ... (keep your existing breadcrumb navigation) ... */}
+
         <div className="mb-8">
           {/* Mobile  */}
           <div className="flex lg:hidden items-center text-sm  text-gray-600 mb-4">
@@ -65,7 +95,7 @@ const Payment = () => {
               />
               <div className="w-6 h-px bg-gray-300"></div>
             </div>
-           <NavLink
+            <NavLink
               to="/billing"
               className="flex items-center hover:text-green-600 transition-colors"
             >
@@ -88,6 +118,9 @@ const Payment = () => {
                   <input
                     type="radio"
                     name="payment"
+                    value="digital"
+                    checked={selectedPayment === "digital"}
+                    onChange={() => setSelectedPayment("digital")}
                     className="mt-1 mr-4 h-5 w-5 text-green-600 border-gray-300 focus:ring-green-500"
                   />
                   <div className="flex-1">
@@ -108,6 +141,9 @@ const Payment = () => {
                   <input
                     type="radio"
                     name="payment"
+                    value="cash"
+                    checked={selectedPayment === "cash"}
+                    onChange={() => setSelectedPayment("cash")}
                     className="mt-1 mr-4 h-5 w-5 text-green-600 border-gray-300 focus:ring-green-500"
                   />
                   <div className="flex-1">
@@ -126,6 +162,7 @@ const Payment = () => {
                 <button
                   type="submit"
                   className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-all shadow-md hover:shadow-lg"
+                  onClick={handleSubmit}
                 >
                   Complete Order
                 </button>
@@ -155,7 +192,7 @@ const Payment = () => {
               </div>
             </div>
 
-            {/* Order Summary */}
+            {/* Order Summary with Zustand Data */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Order Summary
@@ -164,7 +201,7 @@ const Payment = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">$316.55</span>
+                  <span>₦{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
@@ -172,13 +209,17 @@ const Payment = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Discount</span>
-                  <span className="font-medium text-green-600">-$10.00</span>
+                  <span className="font-medium text-green-600">
+                    -₦{discount.toLocaleString()}
+                  </span>
                 </div>
               </div>
 
               <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between">
                 <span className="font-bold text-gray-800">Total</span>
-                <span className="font-bold text-green-600">$320.45</span>
+                <span className="font-bold text-green-600">
+                  ₦{total.toLocaleString()}
+                </span>
               </div>
             </div>
           </div>

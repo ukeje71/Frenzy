@@ -321,7 +321,7 @@ const Cart = () => {
               </div>
 
               <button
-                onClick={() => navigate("/billing")}
+                onClick={() => navigate("/payment")}
                 disabled={cart.length === 0}
                 className={`w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium py-3 px-4 rounded-lg mt-6 transition-all shadow-md hover:shadow-lg ${
                   cart.length === 0 ? "opacity-70 cursor-not-allowed" : ""
