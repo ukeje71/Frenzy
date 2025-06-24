@@ -15,7 +15,7 @@ import Sidebar from "../components/Sidebar";
 import useCartStore from "../components/store/CartStore";
 
 const Billing = () => {
-  const publicKey = "pk_test_15d1a66d354ca8680092d0ff1c1ccebef82044be";
+  const publicKey = import.meta.env.VITE_PAYSTACK_KEY;
   const navigate = useNavigate();
   const { totalPrice, clearCart, items } = useCartStore();
 
