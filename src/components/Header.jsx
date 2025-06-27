@@ -268,7 +268,7 @@ const Header = () => {
                               { text: "Shop", path: "/" },
                               { text: "Cart", path: "/cart" },
                               { text: "Wishlist", path: "/wish" },
-                              { text: "Invoices", path: "#" },
+                              { text: "Invoices", path: "invoices" },
                             ].map((item) => (
                               <li key={item.text}>
                                 <NavLink
@@ -303,7 +303,7 @@ const Header = () => {
                       {
                         icon: <Mail className="w-5 h-5" />,
                         text: "Mail",
-                        path: "#",
+                        path: "mail",
                       },
                       {
                         icon: <MessageSquare className="w-5 h-5" />,
@@ -313,7 +313,7 @@ const Header = () => {
                       {
                         icon: <Calendar className="w-5 h-5" />,
                         text: "Ecommerce",
-                        path: "#",
+                        path: "ecommerce",
                       },
                     ].map((item) => (
                       <li key={item.text}>
