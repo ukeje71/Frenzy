@@ -95,7 +95,7 @@ const Cards = ({ product }) => {
   }
 
   return (
-    <div className="p-2 shadow-xs  shadow-gray-400 border-gray-200 border-1 hover:shadow-md transition-shadow group rounded-2xl h-105 md:w-65">
+    <div className="p-2 shadow-xs  shadow-gray-400 border-gray-200 border-1 hover:shadow-md transition-shadow group rounded-2xl h-full md:w-65">
       {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
       <div className="relative">

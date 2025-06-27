@@ -59,7 +59,7 @@ const Billing = () => {
     return errors;
   };
 
-  // Paystack configuration with verification
+  // Paystack configuration
   const paystackConfig = {
     reference: `FRENZY-${Date.now()}`,
     email: formData.email,
@@ -75,78 +75,7 @@ const Billing = () => {
 
   const initializePayment = usePaystackPayment(paystackConfig);
 
-  // Enhanced payment success handler with Firestore integration
-  const handlePaymentSuccess = async (response) => {
-    try {
-      // 1. First verify the payment with Paystack
-      const verificationResponse = await verifyPayment(response.reference);
-
-      if (
-        !verificationResponse.status ||
-        verificationResponse.status !== "success"
-      ) {
-        throw new Error("Payment verification failed");
-      }
-
-      // 2. Prepare order data for Firestore
-      const orderData = {
-        customerDetails: {
-          ...formData,
-          deliveryAddress: `${formData.addressLine1}, ${formData.streetName}, ${formData.city}, ${formData.state}`,
-        },
-        paymentDetails: {
-          amount: total,
-          reference: response.reference,
-          status: "verified",
-          method: "Paystack",
-          verifiedAt: serverTimestamp(),
-        },
-        orderDetails: {
-          subtotal,
-          discount,
-          shipping,
-          total,
-          items: items.map((item) => ({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-          })),
-        },
-        status: "paid",
-        createdAt: serverTimestamp(),
-      };
-
-      // 3. Save to Firestore "Order" collection
-      const orderRef = await addDoc(collection(db, "Order"), orderData);
-
-      console.log("Order saved to Firestore with ID:", orderRef.id);
-      setIsProcessing(false);
-
-      // 4. Clear cart and redirect
-      clearCart();
-      navigate(`/order-confirmation/${orderRef.id}`);
-
-      toast.success(
-        <div className="flex items-center gap-2">
-          <CheckCircle2 className="text-green-500" />
-          Order confirmed! Delivery on the way.
-        </div>
-      );
-    } catch (error) {
-      console.error("Order processing error:", error);
-      toast.error(
-        <div className="flex items-center gap-2">
-          <Package className="text-red-500" />
-          {error.message || "Failed to process order"}
-        </div>
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  // Payment verification function
+  // Verify payment with Paystack
   const verifyPayment = async (reference) => {
     try {
       const response = await fetch(
@@ -158,9 +87,89 @@ const Billing = () => {
           },
         }
       );
-      return await response.json();
+      const data = await response.json();
+      if (!data.status || data.data.status !== "success") {
+        throw new Error("Payment verification failed");
+      }
+      return data;
     } catch (error) {
-      error.message, "Payment verification failed";
+      console.error("Verification error:", error);
+      throw error;
+    }
+  };
+
+  // Handle successful payment
+  const handlePaymentSuccess = async (response) => {
+    try {
+      setIsProcessing(true);
+      
+      // Verify payment first
+      const verification = await verifyPayment(response.reference);
+      
+      if (verification.data.status === "success") {
+        // Prepare order data for Firestore
+        const orderData = {
+          customer: {
+            name: formData.fullName,
+            email: formData.email,
+            phone: formData.phoneNumber,
+            address: {
+              line1: formData.addressLine1,
+              street: formData.streetName,
+              city: formData.city,
+              state: formData.state,
+            },
+            deliveryMethod: formData.deliveryOption,
+          },
+          payment: {
+            amount: total,
+            reference: response.reference,
+            status: "verified",
+            method: "Paystack",
+            verifiedAt: serverTimestamp(),
+          },
+          items: items.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          summary: {
+            subtotal,
+            discount,
+            shipping,
+            total,
+            itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+          },
+          status: "processing",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        };
+
+        // Save to Firestore
+        const docRef = await addDoc(collection(db, "orders"), orderData);
+        
+        // Clear cart and redirect
+        clearCart();
+        navigate(`/order-confirmation/${docRef.id}`);
+        
+        toast.success(
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="text-green-500" />
+            Order confirmed! Delivery on the way.
+          </div>
+        );
+      }
+    } catch (error) {
+      console.error("Payment processing error:", error);
+      toast.error(
+        <div className="flex items-center gap-2">
+          <Package className="text-red-500" />
+          {error.message || "Payment processing failed"}
+        </div>
+      );
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -189,20 +198,10 @@ const Billing = () => {
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 pt-20">
       <Sidebar />
 
-      <main className="w-full  p-4 md:p-8">
-        {/* Navigation */}
-        {/* <div className="mb-8">
-          <NavLink
-            to="/cart"
-            className="flex items-center text-gray-600 hover:text-green-600"
-          >
-            <ChevronLeft size={18} className="mr-1" />
-            Back to Cart
-          </NavLink>
-        </div> */}
+      <main className="w-full p-4 md:p-8">
         <div className="mb-8">
-          {/* Mobile  */}
-          <div className="flex lg:hidden items-center text-sm  text-gray-600 mb-4">
+          {/* Mobile Navigation */}
+          <div className="flex lg:hidden items-center text-sm text-gray-600 mb-4">
             <NavLink to="/" className="hover:text-green-600 transition-colors">
               Home
             </NavLink>
@@ -212,7 +211,7 @@ const Billing = () => {
             </NavLink>
           </div>
 
-          {/* Desktop  */}
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center text-sm text-gray-600 space-x-4">
             <NavLink
               to="/cart"
