@@ -21,7 +21,7 @@ const Home = () => {
   }
 
   // Ensure minimum 3 slides for better swiper experience
-  while (productPages.length < 3) {
+  while (productPages.length < 1) {
     productPages.push([]);
   }
 

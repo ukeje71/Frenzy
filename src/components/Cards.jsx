@@ -119,7 +119,7 @@ const Cards = ({ product }) => {
               className={
                 isWishlisted
                   ? "bg-white rounded-full p-1  text-red-500 fill-red-500"
-                  : "rounded-full p-1 cursor-pointer text-gray-600"
+                  : "rounded-full p-1 cursor-pointer bg-white  text-gray-600"
               }
               size={30}
             />

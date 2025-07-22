@@ -51,8 +51,8 @@ const useCartStore = create(
       },
     }),
     {
-      name: "cart-storage", // unique name for localStorage key
-      storage: createJSONStorage(() => localStorage), // or sessionStorage
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage), 
     }
   )
 );
